@@ -10,8 +10,9 @@ namespace FSRandomizer {
 			this.getBreakdown();
 		}
 		public void getHash(string hash) {
-			//Download Hash
 			hash = "http://localhost/FSRandomizer/docs/?uniqueID=5ea1db75defc1&output=hash"; //TODO: Remove hardcoding when form is complete
+			
+			//Download Hash
 			WebClient client = new WebClient();
 			client.Encoding = System.Text.Encoding.UTF8;
 			hash = client.DownloadString(hash);
