@@ -3,22 +3,22 @@ using System.Net;
 
 namespace FSRandomizer {
 	class readHash {
-		private string hash;
 		private List<List<string>> songlist = new List<List<string>>(); //[key](diff, name, game)
 		private List<List<string>> fslist   = new List<List<string>>(); //[key](diff, name, game, ID, chapter)
         
 		public readHash() {
 			this.getBreakdown();
 		}
-		public void getHash(string hash="") {
+		public void getHash(string hash) {
 			//Download Hash
+			hash = "http://localhost/FSRandomizer/docs/?uniqueID=5ea1db75defc1&output=hash"; //TODO: Remove hardcoding when form is complete
 			WebClient client = new WebClient();
 			client.Encoding = System.Text.Encoding.UTF8;
-			this.hash = client.DownloadString("http://localhost/FSRandomizer/docs/?uniqueID=5ea1db75defc1&output=hash"); //TODO: Remove hardcoding when form is complete
+			hash = client.DownloadString(hash);
 			
 			//Build the full series list
 			try {
-				string[] hashChapters = this.hash.Split('|');
+				string[] hashChapters = hash.Split('|');
 				for (int i = 0; i < hashChapters.Length; ++i) {
 					for (int x = 0; x < hashChapters[i].Length; x += 4) {
 						//Declarations
