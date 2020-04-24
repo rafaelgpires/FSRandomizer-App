@@ -6,8 +6,10 @@ namespace FSRandomizer {
 		[STAThread]
 		static void Main()
 		{
-			readHash readHash = new readHash();
-			readHash.getHash();
+			//readHash readHash = new readHash();
+			//readHash.getHash();
+
+			editFolder editFolder = new editFolder();
 
 			//Application.EnableVisualStyles();
 			//Application.SetCompatibleTextRenderingDefault(false);
