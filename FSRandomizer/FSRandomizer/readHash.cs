@@ -9,62 +9,61 @@ namespace FSRandomizer {
         
 		public readHash() {
 			this.getBreakdown();
-			this.getHash();
 		}
 		public void getHash(string hash="") {
-			//TODO: Get hash from URL
-			//TODO: Check if it gets a valid hash
-			this.hash = "007000510163013601420125011600270121006400830056109512061253|006300520132005000080129008700420177007200780003109211921127|004400930037007301040130006900310002001001830118117012121147|003901790185010200350161000000410086007700480040123510941103|015501730197016500280141014901540099012401780210124511371162|003301310097004701450120014800530196020200570198127312601258|004602040175016402200172021601010065022102260174118613201283|021400430038011201440184001901810239006101710176129813671286|003201690081021301430005006702420071018701600113119911881278|022802340090026101670058005401100218009102300219126612551156|005501890270007602560275007902640135002300600089131912431215|012302380209002602720180009802680049001402460265124911521233|004502760292015900660259016602480254000402570030130512811333|001101580291030301460080010000130020022701170287141413451393|013402960034021100160244023102470301029300590297131512241327|022901150029023700090074031800220322022500010284129013471369|032301110310027401330299023602690140032503350006136613881328|019100170285027103320200008200750105026700180251141813591436|028801900062034602070326010903160217001201530324127914111379|025000880354034003480119013803750349013903720376141314191321|002502320378035203770373033401070015030903070024129513171450|019302030338038003510252027703580399037103000370136014071453|012603390357030601940282037402800389039504010084136413421429|011403560421039102230331039001950343031202080337140913841438|012803820431040503620423038703440314015103110365142713961460|040300360021039804390168038101820444041204040085151914751508|033604100452044502050263010604550385045604430440143514961521|041604610108000700680313043204480466041504060353143714701454|044104240471045103040420036104630355046204420262142214001538|028904470480048304890408020104880476041701220425149215071506|024104840392049004690426035004970308049402220430155515511514|047202400459050204780397043404580474029403860503150515281467|049103680515050105100363048104730464052405290157154814791549|009603410530048605200487044904280531040205040446151815591516|015005360495051705330522045705260550055204980468156815611558|054203940433054705530482054505130562047703290540155415441580|056705340532054605110493056905640560057103020556157815661565|057005370485057905250557053505810330057705850465157315921599|057205090539057604990512057505000586059805900541160416091603|052705740591059705930587060705890600060203830596160616151624|058406050543060805950614061006120582058806190601163316341632|061606200621062506130583062205230594062906110623163716271642|061706180628063806260636064006310563063906430644164116481635|064606470645064906510630065206530654065006550656165716581659";
+			//Download Hash
+			WebClient client = new WebClient();
+			client.Encoding = System.Text.Encoding.UTF8;
+			this.hash = client.DownloadString("http://localhost/FSRandomizer/docs/?uniqueID=5ea1db75defc1&output=hash"); //TODO: Remove hardcoding when form is complete
 			
-			string[] hashChapters = this.hash.Split('|');
-			for(int i = 0; i < hashChapters.Length; ++i) {
-				for(int x = 0; x < hashChapters[i].Length; x+=4) {
-					//Declarations
-					List<string> song;
-					string prefix;
-					int songID;
+			//Build the full series list
+			try {
+				string[] hashChapters = this.hash.Split('|');
+				for (int i = 0; i < hashChapters.Length; ++i) {
+					for (int x = 0; x < hashChapters[i].Length; x += 4) {
+						//Declarations
+						List<string> song;
+						string prefix;
+						int songID;
 
-					//Encore switch
-					switch (hashChapters[i][x]) {
-						case '1': prefix = "[ENCORE] "; break;
-						case '2': prefix = "[SUPER ENCORE] "; break;
-						default: prefix = ""; break;
+						//Encore switch
+						switch (hashChapters[i][x]) {
+							case '1': prefix = "[ENCORE] "; break;
+							case '2': prefix = "[SUPER ENCORE] "; break;
+							default: prefix = ""; break;
+						}
+
+						//Get song info
+						int.TryParse(hashChapters[i].Substring((x + 1), 3), out songID);
+						song = new List<string>(this.songlist[songID]);
+						song[1] = prefix + song[1];
+						song.Add(songID.ToString());
+						song.Add((i + 1).ToString());
+
+						//Register the song
+						this.fslist.Add(song);
 					}
-
-					//Get song info
-					int.TryParse(hashChapters[i].Substring((x + 1), 3), out songID);
-					song = new List<string>(this.songlist[songID]);
-					song[1] = prefix + song[1];
-					song.Add(songID.ToString());
-					song.Add((i+1).ToString());
-
-					//Register the song
-					this.fslist.Add(song);
 				}
-			}
-			return;
+			} catch { new die("Error: Couldn't recognise a valid Full Series list from the link given."); }
 		}
 
 		private void getBreakdown() {
 			//Download the breakdown file
 			WebClient client = new WebClient();
 			client.Encoding = System.Text.Encoding.UTF8;
-			string breakdownFile = client.DownloadString("https://raw.githubusercontent.com/rafaelgpires/FSRandomizer-Web/master/docs/breakdown.txt");
-			//TODO: Fix link to hosted link
+			string breakdownFile = client.DownloadString("http://localhost/FSRandomizer/docs/breakdown.txt"); //TODO: Update on Host
 
 			//Build the song list from the breakdown
 			try {
-			string[] breakdown = breakdownFile.Split('\n');
-			for (int breakdownKey = 0; breakdownKey < breakdown.Length; ++breakdownKey) {
-				string[] song = breakdown[breakdownKey].Remove(0, 6).Trim().Split('|');
-				songlist.Add(new List<string>());
-				for (int songKey = 0; songKey < song.Length; ++songKey) {
-				songlist[breakdownKey].Add(song[songKey].Trim());
+				string[] breakdown = breakdownFile.Split('\n');
+				for (int breakdownKey = 0; breakdownKey < breakdown.Length; ++breakdownKey) {
+					string[] song = breakdown[breakdownKey].Remove(0, 6).Trim().Split('|');
+					songlist.Add(new List<string>());
+					for (int songKey = 0; songKey < song.Length; ++songKey) {
+					songlist[breakdownKey].Add(song[songKey].Trim());
+					}
 				}
-			}
-			} catch {
-			new die("Error: Couldn't retrieve Master FC Breakdown. Maybe website is down?");
-			}
+			} catch { new die("Error: Couldn't retrieve the Master FC Breakdown. Maybe website is down?"); }
 		}
     }
 }
