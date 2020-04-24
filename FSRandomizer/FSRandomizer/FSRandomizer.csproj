@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cl_readHash.cs" />
+    <Compile Include="die.cs" />
+    <Compile Include="readHash.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
