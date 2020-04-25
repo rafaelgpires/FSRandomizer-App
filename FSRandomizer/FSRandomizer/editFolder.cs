@@ -180,7 +180,7 @@ namespace FSRandomizer {
 			}
 		}
 
-		public void changeSongIni(string songPath, string songName, int playlistTrack, string difficulty) {
+		private void changeSongIni(string songPath, string songName, int playlistTrack, string difficulty) {
 			string songIniPath = songPath + "\\song.ini";
 			string[] songIni;
 
