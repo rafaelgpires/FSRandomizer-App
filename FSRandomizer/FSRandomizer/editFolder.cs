@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.IO;
-using System.Linq;
 using System.IO.Compression;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace FSRandomizer {
 	class editFolder {
@@ -89,7 +89,7 @@ namespace FSRandomizer {
 			if(string.IsNullOrEmpty(this.UserCHSongsFolderLoc)) { new die("Customs song folder hasn't been prepared for my unzipping yet."); }
 
 			//Unzip
-			//try { ZipFile.ExtractToDirectory(this.FSFolderLoc, this.CHSongsFolderLoc); } catch { new die("Failed to unzip. Try running as administrator?"); } //TODO: Add progress bar in Design, this is gonna take a while
+			try { ZipFile.ExtractToDirectory(this.FSFolderLoc, this.CHSongsFolderLoc); } catch { new die("Failed to unzip. Try running as administrator?"); } //TODO: Add progress bar in Design, this is gonna take a while
 
 			this.unzipped = true;
 		}
@@ -126,13 +126,11 @@ namespace FSRandomizer {
 			this.listsongs = true;
 		}
 		public void createChapters(List<List<List<string>>> fslist) {
-			//TODO: Edit song.ini while we have the directory...
-
 			//Check that songlist is ready to be processed
 			if(this.listsongs != true) { new die("Attempted to create chapters before being ready."); }
 
 			//Loop through the full series list
-			int SongNum = 0;
+			int SongNum = 1;
 			for (int Chapter = 0; Chapter < fslist.Count; ++Chapter) {
 				//Create chapter folder, zero-pad chapter to keep alphabetical order correct
 				string padChapter    = (Chapter + 1).ToString().PadLeft(2, '0');
@@ -141,6 +139,7 @@ namespace FSRandomizer {
 				catch { new die("Couldn't create chapter folder. Try running as admin?"); }
 
 				//Loop through chapter songs
+				int chapterSong = 0;
 				foreach(List<string> song in fslist[Chapter]) {
 					//Zero-pad song number to keep alphabetical order correct
 					string padSongNum = SongNum.ToString().PadLeft(3, '0');
@@ -158,10 +157,13 @@ namespace FSRandomizer {
 					bool found = false;
 					foreach (List<string> songName in this.songlist[this.convertGame2Key(song[2])]) {
 						if (song[1].ToLower() == songName[1].ToLower()) {
+							//Found the song in a local folder
 							found = true;
+							chapterSong++;
 
-							//Move to chapter folder
+							//Change ini and move to chapter folder
 							string newName = "[" + padSongNum + "] " + encore + song[1];
+							this.changeSongIni(songName[0], newName, chapterSong, song[0]);
 							try { Directory.Move(songName[0], ChapterFolder + "\\" + newName); }
 							catch { new die("Couldn't move song to chapter folder. Try running as administrator?"); }
 						}
@@ -181,6 +183,48 @@ namespace FSRandomizer {
 			}
 		}
 
+		public void changeSongIni(string songPath, string songName, int playlistTrack, string difficulty) {
+			string songIniPath = songPath + "\\song.ini";
+			string[] songIni;
+
+			try {
+				//Read through the current ini file and start writing our version
+				List<string> newFile = new List<string>();
+				songIni = File.ReadAllLines(songIniPath);
+				foreach(string line in songIni) {
+					Match Match = Regex.Match(line, "^([a-z0-9_]+) ?= ?(.+)$");
+					if(Match.Success) {
+						string configName = Match.Groups[1].Value;
+						switch(configName) {
+							//Find the settings we're gonna change, don't add them
+							case "name": break;
+							case "diff_guitar": break;
+							case "playlist_track": break;
+							default:
+								//Remove other difficulties
+								if(configName.Length > 5)
+									if (configName.Substring(0, 5) == "diff_")
+										break;
+
+								//Otherwise, add the config as normal
+								newFile.Add(line);
+								break;
+						}
+					} else { newFile.Add(line); }
+				}
+
+				//Append our settings to the end of the file
+				newFile.Add("name = " + songName);
+				newFile.Add("diff_guitar = " + difficulty);
+				newFile.Add("playlist_track = " + playlistTrack);
+
+				//Write the new config file
+				string configFile = string.Join("\n", newFile);
+				File.WriteAllText(songIniPath, configFile);
+			}
+			catch { new die("Couldn't change '" + "'s song.ini at '" + songPath + "'. Try running as admin?"); }
+
+		}
 		private void getRealFSSize() {
 			//Download RealFSSize
 			WebClient client = new WebClient();

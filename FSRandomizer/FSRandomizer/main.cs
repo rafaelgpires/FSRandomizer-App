@@ -7,7 +7,8 @@ namespace FSRandomizer {
 		static void Main()
 		{
 			editFolder editFolder = new editFolder();       //GET.: (Online) FSFolder Size
-			readHash readHash = new readHash();		//GET.: (Online) Breakdown List
+			readHash readHash = new readHash();             //GET.: (Online) Breakdown List
+			
 			readHash.getHash("");				//GET.: Full Series List
 			editFolder.readCHFolder("");			//GET.: CH's folder path
 			editFolder.readFSFolder("");                    //GET.: FSFolder

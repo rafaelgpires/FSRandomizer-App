@@ -10,7 +10,7 @@ namespace FSRandomizer {
 			this.getBreakdown();
 		}
 		public void getHash(string hash) {
-			hash = "http://localhost/FSRandomizer/docs/?uniqueID=5ea1db75defc1&output=hash"; //TODO: Remove hardcoding when form is complete
+			hash = "http://localhost/FSRandomizer/docs/?uniqueID=5ea42440377a4&output=hash"; //TODO: Remove hardcoding when form is complete
 			
 			//Download Hash
 			WebClient client = new WebClient();
