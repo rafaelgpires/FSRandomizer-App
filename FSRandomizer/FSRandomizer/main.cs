@@ -15,7 +15,8 @@ namespace FSRandomizer {
 			editFolder.prepareCHFolder();                   //DO..: Clean CHSongsFolder
 			editFolder.unzipFSFolder();                     //DO..: Extract FSFolder
 			editFolder.prepareFSFolder();                   //GET.: FSFolder's songs
-			editFolder.createChapters(readHash.fslist);	//DO..: Create the chapters
+			editFolder.createChapters(readHash.fslist);     //DO..: Create the chapters
+			editFolder.changeSettings();			//DO..: Change CH settings
 
 			//Application.EnableVisualStyles();
 			//Application.SetCompatibleTextRenderingDefault(false);

@@ -179,6 +179,34 @@ namespace FSRandomizer {
 				catch { new die("Couldn't delete leftover folders."); }
 			}
 		}
+		public void changeSettings() {
+			string[] Settings;
+			try {
+				//Read settings file
+				List<string> newSettings = new List<string>();
+				Settings = File.ReadAllLines(SettingsFile);
+
+				//Look for sort_filter
+				bool foundSetting = false;
+				foreach (string line in Settings) {
+					Match Match = Regex.Match(line, "^([a-z0-9_]+) ?= ?(.+)$");
+					if (Match.Success) {
+						string configName = Match.Groups[1].Value;
+						if (configName.Trim() == "sort_filter") {
+							foundSetting = true;
+							newSettings.Add("sort_filter = 8");
+						} else newSettings.Add(line);
+					} else newSettings.Add(line);
+				}
+
+				//If by chance we didn't find it, append it to the end of the file
+				if (!foundSetting) newSettings.Add("sort_filter = 8");
+
+				//Write the new config file
+				string newSettingsFile = string.Join("\n", newSettings);
+				File.WriteAllText(SettingsFile, newSettingsFile);
+			} catch { new die("Couldn't change your Clone Hero settings. You can change it manually by setting default sort filter to Playlist in Gameplay."); }
+		}
 
 		private void changeSongIni(string songPath, string songName, int playlistTrack, string difficulty) {
 			string songIniPath = songPath + "\\song.ini";
