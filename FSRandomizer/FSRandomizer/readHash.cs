@@ -3,8 +3,8 @@ using System.Net;
 
 namespace FSRandomizer {
 	class readHash {
-		private List<List<string>> songlist = new List<List<string>>(); //[key](diff, name, game)
-		private List<List<string>> fslist   = new List<List<string>>(); //[key](diff, name, game, ID, chapter)
+		public List<List<List<string>>> fslist; //[chapter][key](diff, name, game)
+		private List<List<string>> songlist;	//[key](diff, name, game)
         
 		public readHash() {
 			this.getBreakdown();
@@ -18,9 +18,12 @@ namespace FSRandomizer {
 			hash = client.DownloadString(hash);
 			
 			//Build the full series list
+			this.fslist = new List<List<List<string>>>();
 			try {
 				string[] hashChapters = hash.Split('|');
 				for (int i = 0; i < hashChapters.Length; ++i) {
+					//Create chapter and get songs
+					List<List<string>> songs = new List<List<string>>();
 					for (int x = 0; x < hashChapters[i].Length; x += 4) {
 						//Declarations
 						List<string> song;
@@ -38,12 +41,13 @@ namespace FSRandomizer {
 						int.TryParse(hashChapters[i].Substring((x + 1), 3), out songID);
 						song = new List<string>(this.songlist[songID]);
 						song[1] = prefix + song[1];
-						song.Add(songID.ToString());
-						song.Add((i + 1).ToString());
 
-						//Register the song
-						this.fslist.Add(song);
+						//Add song to chapter
+						songs.Add(song);
 					}
+
+					//Add chapter to list
+					this.fslist.Add(songs);
 				}
 			} catch { new die("Error: Couldn't recognise a valid Full Series list from the link given."); }
 		}
@@ -55,13 +59,14 @@ namespace FSRandomizer {
 			string breakdownFile = client.DownloadString("http://localhost/FSRandomizer/docs/breakdown.txt"); //TODO: Update on Host
 
 			//Build the song list from the breakdown
+			this.songlist = new List<List<string>>();
 			try {
 				string[] breakdown = breakdownFile.Split('\n');
 				for (int breakdownKey = 0; breakdownKey < breakdown.Length; ++breakdownKey) {
 					string[] song = breakdown[breakdownKey].Remove(0, 6).Trim().Split('|');
-					songlist.Add(new List<string>());
+					this.songlist.Add(new List<string>());
 					for (int songKey = 0; songKey < song.Length; ++songKey) {
-					songlist[breakdownKey].Add(song[songKey].Trim());
+					this.songlist[breakdownKey].Add(song[songKey].Trim());
 					}
 				}
 			} catch { new die("Error: Couldn't retrieve the Master FC Breakdown. Maybe website is down?"); }
