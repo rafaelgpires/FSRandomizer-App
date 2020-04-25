@@ -144,9 +144,6 @@ namespace FSRandomizer {
 				foreach(List<string> song in fslist[Chapter]) {
 					//Zero-pad song number to keep alphabetical order correct
 					string padSongNum = SongNum.ToString().PadLeft(3, '0');
-
-					if(SongNum >= 339) { continue; } //DEBUG
-
 					
 					//Remove encore prefixes from song names but add them in the new dir
 					string encore = "";
