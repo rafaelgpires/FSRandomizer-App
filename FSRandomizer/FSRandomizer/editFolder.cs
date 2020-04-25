@@ -13,7 +13,7 @@ namespace FSRandomizer {
 		private string FSFolderLoc;			//Confirmed location of Standardized FS folder
 		private string CHSongsFolderLoc;		//Confirmed location of CH's /songs/
 		private string SettingsFile;			//Confirmed location of CH's settings.ini
-		private string UserCHSongsFolderLoc;		//Confirmed location of CH's /songs/[Customs]
+		private string UserCHSongsFolderLoc;		//Confirmed location of CH's /songs_backup/
 		private bool unzipped = false;			//Confirmed unzipping of FSFolder
 		private bool listsongs = false;			//Confirmed this.songlist is ready for processing
 
@@ -60,23 +60,21 @@ namespace FSRandomizer {
 			string UserCHSongsFolderLoc;
 			if (Directory.EnumerateFileSystemEntries(this.CHSongsFolderLoc).Any()) {
 				//Create a folder to store user's previous content
-				UserCHSongsFolderLoc = this.CHSongsFolderLoc + "\\[Customs]";
-				try { Directory.CreateDirectory(UserCHSongsFolderLoc); } catch { new die("Couldn't create a directory [Customs] to store your songs in.\nTry running this app as administrator or deleting any existing [Customs] directory."); return; }
-
+				UserCHSongsFolderLoc = Path.GetDirectoryName(this.CHSongsFolderLoc) + "\\songs_backup";
+				try { Directory.CreateDirectory(UserCHSongsFolderLoc); }
+				catch { new die("Couldn't create directory songs_backup to store your songs in.\nTry running this app as administrator or deleting any existing songs_bakcup directory."); return; }
+				
 				//Loop through the content of the user's directory and put it all in the created folder
 				try {
 					//Take care of files
-					foreach (string fileName in Directory.GetFiles(this.CHSongsFolderLoc)) {
+					foreach (string fileName in Directory.GetFiles(this.CHSongsFolderLoc))
 						File.Move(fileName, UserCHSongsFolderLoc + "\\" + Path.GetFileName(fileName));
-					}
 
 					//Take care of directories
-					foreach (string dir in Directory.GetDirectories(this.CHSongsFolderLoc)) {
-						if (dir == UserCHSongsFolderLoc) continue; //Skip our own folder
+					foreach (string dir in Directory.GetDirectories(this.CHSongsFolderLoc))
 						Directory.Move(dir, UserCHSongsFolderLoc + "\\" + Path.GetFileName(dir));
-					}
-				} catch (System.Exception e) { new die("Couldn't move your stuff to the new directory.\nTry running this app as administrator or empty out your songs folder for now." + e.ToString()); }
-			} else UserCHSongsFolderLoc = "-";
+				} catch (System.Exception e) { new die("Couldn't move your stuff to the new directory.\nTry running this app as administrator or empty out your songs folder for now." + e.ToString()); return; }
+			} else UserCHSongsFolderLoc = this.CHSongsFolderLoc;
 
 			//All went well, store created folder
 			this.UserCHSongsFolderLoc = UserCHSongsFolderLoc;
@@ -101,7 +99,6 @@ namespace FSRandomizer {
 			//TODO: This array could be hardcoded so this step isn't necessary, since the file is always the same
 			this.songlist = new List<List<List<string>>>();
 			foreach (string Game in Directory.GetDirectories(this.CHSongsFolderLoc)) {
-				if(Game == this.UserCHSongsFolderLoc) { continue; } //Skip their customs folder
 				this.songlist.Add(new List<List<string>>());
 				foreach (string Song in Directory.GetDirectories(Game)) {
 					List<string> songInfo = new List<string>();

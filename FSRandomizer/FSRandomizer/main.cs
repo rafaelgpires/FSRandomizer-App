@@ -12,7 +12,7 @@ namespace FSRandomizer {
 			readHash.getHash("");				//GET.: Full Series List
 			editFolder.readCHFolder("");			//GET.: CH's folder path
 			editFolder.readFSFolder("");                    //GET.: FSFolder
-			editFolder.prepareCHFolder();			//DO..: Clean CHSongsFolder
+			editFolder.prepareCHFolder();                   //DO..: Clean CHSongsFolder
 			editFolder.unzipFSFolder();                     //DO..: Extract FSFolder
 			editFolder.prepareFSFolder();                   //GET.: FSFolder's songs
 			editFolder.createChapters(readHash.fslist);	//DO..: Create the chapters
