@@ -91,6 +91,10 @@
     <Content Include="XD Resources\Close Press.png" />
     <Content Include="XD Resources\Close.png" />
     <Content Include="XD Resources\TitleBackground.png" />
+    <Content Include="XD Resources\Transfer Button Disabled.png" />
+    <Content Include="XD Resources\Transfer Button Hover.png" />
+    <Content Include="XD Resources\Transfer Button Press.png" />
+    <Content Include="XD Resources\Transfer Button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

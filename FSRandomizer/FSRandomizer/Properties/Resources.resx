@@ -136,4 +136,16 @@
   <data name="TitleBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\XD Resources\App Title Bar (Desktop).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Transfer_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\xd resources\transfer button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Transfer_Button_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\xd resources\transfer button disabled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Transfer_Button_Hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\xd resources\transfer button hover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Transfer_Button_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\xd resources\transfer button press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
