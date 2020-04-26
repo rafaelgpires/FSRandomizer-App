@@ -29,17 +29,22 @@
         private void InitializeComponent()
         {
 			this.txtFSList = new System.Windows.Forms.TextBox();
+			this.pnlFSList = new System.Windows.Forms.Panel();
+			this.picLabelCHFolder = new System.Windows.Forms.PictureBox();
+			this.picLabelFSList = new System.Windows.Forms.PictureBox();
 			this.btnTransferList = new System.Windows.Forms.Button();
 			this.picCHLogo = new System.Windows.Forms.PictureBox();
 			this.picClose = new System.Windows.Forms.PictureBox();
 			this.picTitleBar = new System.Windows.Forms.PictureBox();
-			this.picLabelFSList = new System.Windows.Forms.PictureBox();
-			this.pnlFSList = new System.Windows.Forms.Panel();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.txtCHFolder = new System.Windows.Forms.TextBox();
+			this.pnlFSList.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picLabelCHFolder)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.picLabelFSList)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picCHLogo)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picClose)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picTitleBar)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.picLabelFSList)).BeginInit();
-			this.pnlFSList.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// txtFSList
@@ -52,9 +57,37 @@
 			this.txtFSList.Size = new System.Drawing.Size(270, 18);
 			this.txtFSList.TabIndex = 4;
 			this.txtFSList.Text = "http://www.fsrandomizer.com/5ea458d733d32";
-			this.txtFSList.Enter += new System.EventHandler(this.txtFSList_Enter);
-			this.txtFSList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFSList_KeyDown);
-			this.txtFSList.Leave += new System.EventHandler(this.txtFSList_Leave);
+			this.txtFSList.Enter += new System.EventHandler(this.txtEnterFocus);
+			this.txtFSList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
+			this.txtFSList.Leave += new System.EventHandler(this.txtLeaveFocus);
+			// 
+			// pnlFSList
+			// 
+			this.pnlFSList.BackColor = System.Drawing.Color.White;
+			this.pnlFSList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnlFSList.Controls.Add(this.txtFSList);
+			this.pnlFSList.Location = new System.Drawing.Point(10, 230);
+			this.pnlFSList.Name = "pnlFSList";
+			this.pnlFSList.Size = new System.Drawing.Size(280, 32);
+			this.pnlFSList.TabIndex = 6;
+			// 
+			// picLabelCHFolder
+			// 
+			this.picLabelCHFolder.Image = global::FSRandomizer.Properties.Resources.Label_Clone_Hero_Folder;
+			this.picLabelCHFolder.Location = new System.Drawing.Point(10, 285);
+			this.picLabelCHFolder.Name = "picLabelCHFolder";
+			this.picLabelCHFolder.Size = new System.Drawing.Size(107, 17);
+			this.picLabelCHFolder.TabIndex = 7;
+			this.picLabelCHFolder.TabStop = false;
+			// 
+			// picLabelFSList
+			// 
+			this.picLabelFSList.Image = global::FSRandomizer.Properties.Resources.Label_Full_Series_List;
+			this.picLabelFSList.Location = new System.Drawing.Point(10, 206);
+			this.picLabelFSList.Name = "picLabelFSList";
+			this.picLabelFSList.Size = new System.Drawing.Size(83, 17);
+			this.picLabelFSList.TabIndex = 5;
+			this.picLabelFSList.TabStop = false;
 			// 
 			// btnTransferList
 			// 
@@ -71,6 +104,8 @@
 			this.btnTransferList.TabIndex = 3;
 			this.btnTransferList.EnabledChanged += new System.EventHandler(this.btnTransferList_EnabledChanged);
 			this.btnTransferList.Click += new System.EventHandler(this.btnTransferList_Click);
+			this.btnTransferList.Enter += new System.EventHandler(this.btnTransferList_Enter);
+			this.btnTransferList.Leave += new System.EventHandler(this.btnTransferList_Leave);
 			this.btnTransferList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnTransferList_MouseDown);
 			this.btnTransferList.MouseEnter += new System.EventHandler(this.btnTransferList_MouseEnter);
 			this.btnTransferList.MouseLeave += new System.EventHandler(this.btnTransferList_MouseLeave);
@@ -108,24 +143,29 @@
 			this.picTitleBar.TabIndex = 0;
 			this.picTitleBar.TabStop = false;
 			// 
-			// picLabelFSList
+			// panel1
 			// 
-			this.picLabelFSList.Image = global::FSRandomizer.Properties.Resources.Label_Full_Series_List;
-			this.picLabelFSList.Location = new System.Drawing.Point(10, 206);
-			this.picLabelFSList.Name = "picLabelFSList";
-			this.picLabelFSList.Size = new System.Drawing.Size(83, 17);
-			this.picLabelFSList.TabIndex = 5;
-			this.picLabelFSList.TabStop = false;
+			this.panel1.BackColor = System.Drawing.Color.White;
+			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel1.Controls.Add(this.txtCHFolder);
+			this.panel1.Location = new System.Drawing.Point(10, 310);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(280, 32);
+			this.panel1.TabIndex = 8;
 			// 
-			// pnlFSList
+			// txtCHFolder
 			// 
-			this.pnlFSList.BackColor = System.Drawing.Color.White;
-			this.pnlFSList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pnlFSList.Controls.Add(this.txtFSList);
-			this.pnlFSList.Location = new System.Drawing.Point(10, 230);
-			this.pnlFSList.Name = "pnlFSList";
-			this.pnlFSList.Size = new System.Drawing.Size(280, 32);
-			this.pnlFSList.TabIndex = 6;
+			this.txtCHFolder.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txtCHFolder.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtCHFolder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+			this.txtCHFolder.Location = new System.Drawing.Point(5, 5);
+			this.txtCHFolder.Name = "txtCHFolder";
+			this.txtCHFolder.Size = new System.Drawing.Size(270, 18);
+			this.txtCHFolder.TabIndex = 4;
+			this.txtCHFolder.Text = "D:\\Games\\Clone Hero\\";
+			this.txtCHFolder.Enter += new System.EventHandler(this.txtEnterFocus);
+			this.txtCHFolder.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
+			this.txtCHFolder.Leave += new System.EventHandler(this.txtLeaveFocus);
 			// 
 			// frmMain
 			// 
@@ -133,6 +173,8 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
 			this.ClientSize = new System.Drawing.Size(300, 573);
+			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.picLabelCHFolder);
 			this.Controls.Add(this.pnlFSList);
 			this.Controls.Add(this.picLabelFSList);
 			this.Controls.Add(this.btnTransferList);
@@ -145,12 +187,15 @@
 			this.Text = "Clone Hero - Full Series Randomizer";
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseDown);
+			this.pnlFSList.ResumeLayout(false);
+			this.pnlFSList.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picLabelCHFolder)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.picLabelFSList)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picCHLogo)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picClose)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picTitleBar)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.picLabelFSList)).EndInit();
-			this.pnlFSList.ResumeLayout(false);
-			this.pnlFSList.PerformLayout();
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 
         }
@@ -164,6 +209,9 @@
 		private System.Windows.Forms.TextBox txtFSList;
 		private System.Windows.Forms.PictureBox picLabelFSList;
 		private System.Windows.Forms.Panel pnlFSList;
+		private System.Windows.Forms.PictureBox picLabelCHFolder;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.TextBox txtCHFolder;
 	}
 }
 

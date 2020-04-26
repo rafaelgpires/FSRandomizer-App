@@ -26,7 +26,7 @@ namespace FSRandomizer {
 		editFolder editFolder;
 		readHash readHash;
 
-		/* Windows Form */
+		/* Main Form */
 		public frmMain() { InitializeComponent(); }
 		private void frmMain_Load(object sender, EventArgs e) {
 			//Prevent it automatically focusing a textbox
@@ -74,6 +74,8 @@ namespace FSRandomizer {
 				btnTransferList.Image = Properties.Resources.Transfer_Button;
 			} else btnTransferList.Image = Properties.Resources.Transfer_Button_Disabled;
 		}
+		private void btnTransferList_Enter(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button_Hover; }
+		private void btnTransferList_Leave(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button; }
 		private void btnTransferList_MouseEnter(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button_Hover; }
 		private void btnTransferList_MouseLeave(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button; }
 		private void btnTransferList_MouseDown(object sender, MouseEventArgs e) { if (e.Button == MouseButtons.Left) { btnTransferList.Image = Properties.Resources.Transfer_Button_Press; } }
@@ -91,40 +93,70 @@ namespace FSRandomizer {
 			//Remember to disable controller while doing stuff and re-enabling when it's done or on error
 		}
 
-		/* FSList Text-Input */
-		private void txtFSList_Enter(object sender, EventArgs e) {
-			//Entered focus, if it was on default value, switch to active
-			if (txtFSList.Text == "http://www.fsrandomizer.com/5ea458d733d32") {
-				txtFSList.Text = "";
-				txtFSList.ForeColor = Color.FromArgb(75, 75, 75);
-			}
-		}
-		private void txtFSList_Leave(object sender, EventArgs e) {
-			//Left focus, if it's empty, switch back to default value
-			if(txtFSList.Text == "") {
-				//Load defaults
-				txtFSList.ForeColor = Color.FromArgb(150, 150, 150);
-				txtFSList.Text = "http://www.fsrandomizer.com/5ea458d733d32";
+		/* FSList Input */
+		public string txtFSList_Default = "http://www.fsrandomizer.com/5ea458d733d32";
+		public void txtFSList_Parse(string input) {
+			if (string.IsNullOrEmpty(input)) {
+				//Set hash to false to prevent execution with previous value
 				this.readHash.gotHash = false;
 			} else {
-				//Read user input
-				if (!this.readHash.getHash(txtFSList.Text)) {
+				//Read new hash
+				if (!this.readHash.getHash(input)) {
 					new error(this.readHash.error, "Full Series List", false);
+					txtFSList.SelectionStart = txtFSList.Text.Length; //Put caret at the end
 					txtFSList.Focus();
 					return;
 				}
 			}
-
-			//Scroll contents left
-			txtFSList.SelectionStart = 0;
-			txtFSList.ScrollToCaret();
 		}
-		private void txtFSList_KeyDown(object sender, KeyEventArgs e) {
+
+		/* CHFolder Input */
+		public string txtCHFolder_Default = @"D:\Games\Clone Hero\";
+		public void txtCHFolder_Parse(string input) {
+			if (String.IsNullOrEmpty(input)) {
+				//Set having CHFolder to false
+			} else {
+				//Value was set, do something
+			}
+		}
+
+		/* TextBox Event Handlers */
+		private void txtKeyDown(object sender, KeyEventArgs e) {
 			//Tab to next control on enter
 			if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return)) {
-				e.Handled = true;
+				e.SuppressKeyPress = true;
 				this.SelectNextControl((Control)sender, true, true, true, true);
 			}
+		}
+		private void txtEnterFocus(object sender, EventArgs e) {
+			//Get info
+			TextBox textbox = (TextBox)sender;
+			string defaultText = (string)this.GetType().GetField(textbox.Name + "_Default").GetValue(this);
+
+			//If it contains default text, empty it before user writes
+			if (textbox.Text == defaultText) {
+				textbox.Text = "";
+				textbox.ForeColor = Color.FromArgb(75, 75, 75);
+			}
+		}
+		private void txtLeaveFocus(object sender, EventArgs e) {
+			//Get info
+			TextBox textbox = (TextBox)sender;
+			string input = textbox.Text;
+			string defaultText = (string)this.GetType().GetField(textbox.Name + "_Default").GetValue(this);
+
+			//If it's empty, switch back to default value
+			if (textbox.Text == "") {
+				textbox.ForeColor = Color.FromArgb(150, 150, 150);
+				textbox.Text = defaultText;
+			}
+
+			//Scroll contents left
+			textbox.SelectionStart = 0;
+			textbox.ScrollToCaret();
+
+			//Call Parser
+			this.GetType().GetMethod(textbox.Name + "_Parse").Invoke(this, new object[]{ input });
 		}
 	}
 }
