@@ -77,28 +77,51 @@ namespace FSRandomizer {
 		private void btnTransferList_MouseEnter(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button_Hover; }
 		private void btnTransferList_MouseLeave(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button; }
 		private void btnTransferList_MouseDown(object sender, MouseEventArgs e) { if (e.Button == MouseButtons.Left) { btnTransferList.Image = Properties.Resources.Transfer_Button_Press; } }
+		private void btnTransferList_Click(object sender, EventArgs e) {
+			//Check if we have the required inputs
+			//TODO: Check the other 3 inputs
+			if(!this.readHash.success) {
+				new error("You haven't given a valid Full Series list.", "Full Series List", false);
+				txtFSList.Focus();
+			} else {
+				MessageBox.Show("Success");
+			}
+
+			//TODO: stuff
+			//Remember to disable controller while doing stuff and re-enabling when it's done or on error
+		}
 
 		/* FSList Text-Input */
 		private void txtFSList_Enter(object sender, EventArgs e) {
 			//Entered focus, if it was on default value, switch to active
 			if (txtFSList.Text == "http://www.fsrandomizer.com/5ea458d733d32") {
 				txtFSList.Text = "";
-				txtFSList.ForeColor = Color.FromArgb(0, 0, 0);
+				txtFSList.ForeColor = Color.FromArgb(75, 75, 75);
 			}
 		}
 		private void txtFSList_Leave(object sender, EventArgs e) {
 			//Left focus, if it's empty, switch back to default value
 			if(txtFSList.Text == "") {
 				//Load defaults
-				txtFSList.ForeColor = Color.FromArgb(153, 153, 153);
+				txtFSList.ForeColor = Color.FromArgb(150, 150, 150);
 				txtFSList.Text = "http://www.fsrandomizer.com/5ea458d733d32";
 			} else {
-				//Do something with value provided
+				//Read user input
+				if (!this.readHash.getHash(txtFSList.Text)) {
+					new error(this.readHash.error, "Full Series List", false);
+					txtFSList.Focus();
+					return;
+				}
 			}
+
+			//Scroll contents left
+			txtFSList.SelectionStart = 0;
+			txtFSList.ScrollToCaret();
 		}
-		private void txtFSList_KeyUp(object sender, KeyEventArgs e) {
+		private void txtFSList_KeyDown(object sender, KeyEventArgs e) {
 			//Tab to next control on enter
 			if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return)) {
+				e.Handled = true;
 				this.SelectNextControl((Control)sender, true, true, true, true);
 			}
 		}

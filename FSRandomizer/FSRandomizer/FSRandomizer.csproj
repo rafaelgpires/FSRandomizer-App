@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="error.cs" />
     <Compile Include="die.cs" />
     <Compile Include="editFolder.cs" />
     <Compile Include="readHash.cs" />

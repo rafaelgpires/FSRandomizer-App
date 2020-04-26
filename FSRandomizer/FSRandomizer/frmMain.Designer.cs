@@ -53,24 +53,24 @@
 			this.txtFSList.TabIndex = 4;
 			this.txtFSList.Text = "http://www.fsrandomizer.com/5ea458d733d32";
 			this.txtFSList.Enter += new System.EventHandler(this.txtFSList_Enter);
-			this.txtFSList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFSList_KeyUp);
+			this.txtFSList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFSList_KeyDown);
 			this.txtFSList.Leave += new System.EventHandler(this.txtFSList_Leave);
 			// 
 			// btnTransferList
 			// 
 			this.btnTransferList.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-			this.btnTransferList.Enabled = false;
 			this.btnTransferList.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
 			this.btnTransferList.FlatAppearance.BorderSize = 0;
 			this.btnTransferList.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
 			this.btnTransferList.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
 			this.btnTransferList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btnTransferList.Image = global::FSRandomizer.Properties.Resources.Transfer_Button_Disabled;
+			this.btnTransferList.Image = global::FSRandomizer.Properties.Resources.Transfer_Button;
 			this.btnTransferList.Location = new System.Drawing.Point(85, 463);
 			this.btnTransferList.Name = "btnTransferList";
 			this.btnTransferList.Size = new System.Drawing.Size(131, 43);
 			this.btnTransferList.TabIndex = 3;
 			this.btnTransferList.EnabledChanged += new System.EventHandler(this.btnTransferList_EnabledChanged);
+			this.btnTransferList.Click += new System.EventHandler(this.btnTransferList_Click);
 			this.btnTransferList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnTransferList_MouseDown);
 			this.btnTransferList.MouseEnter += new System.EventHandler(this.btnTransferList_MouseEnter);
 			this.btnTransferList.MouseLeave += new System.EventHandler(this.btnTransferList_MouseLeave);
