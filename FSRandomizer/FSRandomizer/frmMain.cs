@@ -29,6 +29,10 @@ namespace FSRandomizer {
 		/* Windows Form */
 		public frmMain() { InitializeComponent(); }
 		private void frmMain_Load(object sender, EventArgs e) {
+			//Prevent it automatically focusing a textbox
+			this.ActiveControl = picCHLogo;
+
+			//Initialize FSRandomizer Variables
 			this.editFolder = new editFolder();	//GET.: (Online) FSFolder Size
 			this.readHash = new readHash();         //GET.: (Online) Breakdown List
 
@@ -44,11 +48,17 @@ namespace FSRandomizer {
 			*/
 		}
 
-		/* Drag Form */
+		/* Drag/Double-click Form */
 		private void frmMain_MouseDown(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left) {
-				ReleaseCapture();
-				SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+				if (e.Clicks == 1) {
+					//Drag
+					ReleaseCapture();
+					SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+				} else {
+					//Double click
+					this.ActiveControl = picCHLogo; //Remove focus
+				}
 			}
 		}
 
@@ -58,7 +68,7 @@ namespace FSRandomizer {
 		private void picClose_MouseDown(object sender, MouseEventArgs e) { if (e.Button == MouseButtons.Left) { picClose.Image = Properties.Resources.Close_Press; } }
 		private void picClose_Click(object sender, EventArgs e) { Application.Exit(); }
 
-		/* Transfer List Button */
+		/* Transfer Button */
 		private void btnTransferList_EnabledChanged(object sender, EventArgs e) {
 			if (btnTransferList.Enabled == true) {
 				btnTransferList.Image = Properties.Resources.Transfer_Button;
@@ -67,5 +77,30 @@ namespace FSRandomizer {
 		private void btnTransferList_MouseEnter(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button_Hover; }
 		private void btnTransferList_MouseLeave(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button; }
 		private void btnTransferList_MouseDown(object sender, MouseEventArgs e) { if (e.Button == MouseButtons.Left) { btnTransferList.Image = Properties.Resources.Transfer_Button_Press; } }
+
+		/* FSList Text-Input */
+		private void txtFSList_Enter(object sender, EventArgs e) {
+			//Entered focus, if it was on default value, switch to active
+			if (txtFSList.Text == "http://www.fsrandomizer.com/5ea458d733d32") {
+				txtFSList.Text = "";
+				txtFSList.ForeColor = Color.FromArgb(0, 0, 0);
+			}
+		}
+		private void txtFSList_Leave(object sender, EventArgs e) {
+			//Left focus, if it's empty, switch back to default value
+			if(txtFSList.Text == "") {
+				//Load defaults
+				txtFSList.ForeColor = Color.FromArgb(153, 153, 153);
+				txtFSList.Text = "http://www.fsrandomizer.com/5ea458d733d32";
+			} else {
+				//Do something with value provided
+			}
+		}
+		private void txtFSList_KeyUp(object sender, KeyEventArgs e) {
+			//Tab to next control on enter
+			if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return)) {
+				this.SelectNextControl((Control)sender, true, true, true, true);
+			}
+		}
 	}
 }
