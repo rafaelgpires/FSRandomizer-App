@@ -112,6 +112,18 @@ namespace FSRandomizer {
 
 		/* CHFolder Input */
 		public string txtCHFolder_Default = @"D:\Games\Clone Hero\";
+		private void txtCHFolder_Click(object sender, EventArgs e) {
+			//Show FolderBrowserDialog on click
+			FolderBrowserDialog folderPicker = new FolderBrowserDialog();
+			folderPicker.Description = "Select your Clone Hero installation folder.";
+			folderPicker.ShowNewFolderButton = false;
+			DialogResult result = folderPicker.ShowDialog();
+			if(result == DialogResult.OK) {
+				TextBox textbox = (TextBox)sender;
+				textbox.Text = folderPicker.SelectedPath;
+				textbox.SelectionStart = textbox.Text.Length; //Put caret at the end
+			}
+		}
 		public void txtCHFolder_Parse(string input) {
 			if (String.IsNullOrEmpty(input)) {
 				//Set having CHFolder to false

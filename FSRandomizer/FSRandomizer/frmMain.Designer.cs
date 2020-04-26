@@ -163,6 +163,7 @@
 			this.txtCHFolder.Size = new System.Drawing.Size(270, 18);
 			this.txtCHFolder.TabIndex = 4;
 			this.txtCHFolder.Text = "D:\\Games\\Clone Hero\\";
+			this.txtCHFolder.Click += new System.EventHandler(this.txtCHFolder_Click);
 			this.txtCHFolder.Enter += new System.EventHandler(this.txtEnterFocus);
 			this.txtCHFolder.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
 			this.txtCHFolder.Leave += new System.EventHandler(this.txtLeaveFocus);
