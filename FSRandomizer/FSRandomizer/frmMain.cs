@@ -37,9 +37,7 @@ namespace FSRandomizer {
 			this.readHash = new readHash();         //GET.: (Online) Breakdown List
 
 			/*
-			readHash.getHash("");				//GET.: Full Series List
-			editFolder.readCHFolder("");			//GET.: CH's folder path
-			editFolder.readFSFolder("");                    //GET.: FSFolder
+			editFolder.readFSFolder("");                    //GET.: FSFolder's path
 			editFolder.prepareCHFolder();                   //DO..: Clean CHSongsFolder
 			editFolder.unzipFSFolder();                     //DO..: Extract FSFolder
 			editFolder.prepareFSFolder();                   //GET.: FSFolder's songs
@@ -80,17 +78,23 @@ namespace FSRandomizer {
 		private void btnTransferList_MouseLeave(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button; }
 		private void btnTransferList_MouseDown(object sender, MouseEventArgs e) { if (e.Button == MouseButtons.Left) { btnTransferList.Image = Properties.Resources.Transfer_Button_Press; } }
 		private void btnTransferList_Click(object sender, EventArgs e) {
-			//Check if we have the required inputs
-			//TODO: Check the other 3 inputs
+			/* Check if we have the required inputs */
+			//Check hash
 			if(!this.readHash.gotHash) {
 				new error("You haven't given a valid Full Series list.", "Full Series List", false);
 				txtFSList.Focus();
-			} else {
-				MessageBox.Show("Success");
+				return;
 			}
+			//Check CH Folder
+			if(string.IsNullOrEmpty(editFolder.CHFolderLoc)) {
+				new error("You haven't given a valid Clone Hero location.", "Clone Hero Folder", false);
+				txtCHFolder.Focus();
+				return;	
+			}
+			//TODO: Check the last input
 
 			//TODO: stuff
-			//Remember to disable controller while doing stuff and re-enabling when it's done or on error
+			//Remember to disable controller + textboxes while doing stuff and re-enabling when it's done or on error
 		}
 
 		/* FSList Input */
@@ -105,7 +109,6 @@ namespace FSRandomizer {
 					new error(this.readHash.error, "Full Series List", false);
 					txtFSList.SelectionStart = txtFSList.Text.Length; //Put caret at the end
 					txtFSList.Focus();
-					return;
 				}
 			}
 		}
@@ -126,9 +129,15 @@ namespace FSRandomizer {
 		}
 		public void txtCHFolder_Parse(string input) {
 			if (String.IsNullOrEmpty(input)) {
-				//Set having CHFolder to false
+				//Set CHFolder to empty to prevent execution with previous value
+				this.editFolder.CHFolderLoc = "";
 			} else {
-				//Value was set, do something
+				//Read CH Folder
+				if(!editFolder.readCHFolder(input)) {
+					new error(this.editFolder.error, "Clone Hero Folder", false);
+					txtCHFolder.SelectionStart = txtCHFolder.Text.Length;
+					txtCHFolder.Focus();
+				}
 			}
 		}
 

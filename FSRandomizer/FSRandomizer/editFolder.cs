@@ -9,36 +9,36 @@ namespace FSRandomizer {
 	class editFolder {
 		private List<List<List<string>>> songlist;	//List of songs gotten from the folder when done
 		private string RealFSSize;			//Intended FSFolder size as given by the Website
-		private string CHFolderLoc;			//Confirmed location of CH installation
 		private string FSFolderLoc;			//Confirmed location of Standardized FS folder
 		private string CHSongsFolderLoc;		//Confirmed location of CH's /songs/
 		private string SettingsFile;			//Confirmed location of CH's settings.ini
-		private string UserCHSongsFolderLoc;		//Confirmed location of CH's /songs_backup/
+		private string UserCHSongsFolderLoc;            //Confirmed location of CH's /songs_backup/
 		private bool unzipped = false;			//Confirmed unzipping of FSFolder
-		private bool listsongs = false;			//Confirmed this.songlist is ready for processing
+		private bool listsongs = false;                 //Confirmed this.songlist is ready for processing
+		public string CHFolderLoc;			//Confirmed location of CH installation
+		public string error;				//Error message to send when returning false
 
-		public editFolder () {
-			this.getRealFSSize();
-		}
-		public void readCHFolder(string CHFolderLoc) {
-			CHFolderLoc = "D:\\Games\\Clone Hero"; //TODO: Remove hardcoding on Design
-
+		public editFolder () { this.getRealFSSize(); }
+		public bool readCHFolder(string CHFolderLoc) {
 			//Check validity by finding...
-			//...Settings File
-			string SettingsFile = CHFolderLoc + "\\settings.ini";
-			if (File.Exists(SettingsFile)) this.SettingsFile = SettingsFile;
-			else { new die("Invalid Clone Hero folder, you sure you got the right location?\nCouldn't find a settings file."); }
+			try {
+				//...Settings File
+				string SettingsFile = CHFolderLoc + "\\settings.ini";
+				if (File.Exists(SettingsFile)) this.SettingsFile = SettingsFile;
+				else { this.error = "Unrecognised CH Folder.\nCouldn't find a settings file."; this.CHFolderLoc = ""; return false; }
 
-			//...Clone Hero.exe
-			if(!File.Exists((CHFolderLoc + "\\Clone Hero.exe"))) { new die("Invalid Clone Hero folder, you sure you got the right location?\nCouldn't find the executable."); }
+				//...Clone Hero.exe
+				if (!File.Exists((CHFolderLoc + "\\Clone Hero.exe"))) { this.error = "Unrecognised CH Folder.\nCouldn't find the executable."; this.CHFolderLoc = ""; return false; }
 
-			//.../songs folder
-			string CHSongsFolderLoc = CHFolderLoc + "\\songs";
-			if (Directory.Exists(CHSongsFolderLoc)) this.CHSongsFolderLoc = CHSongsFolderLoc;
-			else { new die("Invalid Clone Hero folder, you sure you got the right location?\nCouldn't find the songs folder."); }
+				//.../songs folder
+				string CHSongsFolderLoc = CHFolderLoc + "\\songs";
+				if (Directory.Exists(CHSongsFolderLoc)) this.CHSongsFolderLoc = CHSongsFolderLoc;
+				else { this.error = "Unrecognised CH Folder.\nCouldn't find the songs folder."; this.CHFolderLoc = ""; return false; }
+			} catch { this.error = "Couldn't read directory. Try running as administrator?"; this.CHFolderLoc = ""; return false; }
 
 			//It's valid, store it
 			this.CHFolderLoc = CHFolderLoc;
+			return true;
 		}
 		public void readFSFolder(string FSFolderLoc) {
 			FSFolderLoc = "D:\\Backups\\Game Files\\Clone Hero\\Songs\\Original Series.zip"; //TODO: Remove hardcoding on Design
@@ -255,7 +255,7 @@ namespace FSRandomizer {
 			WebClient client = new WebClient();
 			client.Encoding = System.Text.Encoding.UTF8;
 			try { this.RealFSSize = client.DownloadString("http://localhost/FSRandomizer/docs/RealFSSize.txt"); } //TODO: Update on host
-			catch { new die("Couldn't retrieve file verification online to confirm there's no problems with your folder. Maybe website is down?"); }
+			catch { new error("Couldn't retrieve file verification online to confirm there's no problems with your folder. Maybe website is down?", "Fatal Error", true); }
 		}
 		private int convertGame2Key(string Game) {
 			switch (Game) {
