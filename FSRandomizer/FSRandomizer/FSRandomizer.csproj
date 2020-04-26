@@ -90,6 +90,7 @@
     <Content Include="XD Resources\Close Hover.png" />
     <Content Include="XD Resources\Close Press.png" />
     <Content Include="XD Resources\Close.png" />
+    <Content Include="XD Resources\TitleBackground.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

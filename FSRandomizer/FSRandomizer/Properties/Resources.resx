@@ -130,6 +130,9 @@
   <data name="Close_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\XD Resources\Close Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TitleBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\xd resources\titlebackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TitleBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\XD Resources\App Title Bar (Desktop).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

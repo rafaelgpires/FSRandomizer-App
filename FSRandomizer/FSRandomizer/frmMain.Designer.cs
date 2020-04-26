@@ -28,9 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
+			this.picClose = new System.Windows.Forms.PictureBox();
 			this.picTitleBar = new System.Windows.Forms.PictureBox();
+			((System.ComponentModel.ISupportInitialize)(this.picClose)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picTitleBar)).BeginInit();
 			this.SuspendLayout();
+			// 
+			// picClose
+			// 
+			this.picClose.BackColor = System.Drawing.Color.Transparent;
+			this.picClose.BackgroundImage = global::FSRandomizer.Properties.Resources.TitleBackground;
+			this.picClose.Image = global::FSRandomizer.Properties.Resources.Close;
+			this.picClose.Location = new System.Drawing.Point(260, 0);
+			this.picClose.Name = "picClose";
+			this.picClose.Size = new System.Drawing.Size(40, 32);
+			this.picClose.TabIndex = 1;
+			this.picClose.TabStop = false;
+			this.picClose.Click += new System.EventHandler(this.picClose_Click);
+			this.picClose.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picClose_MouseDown);
+			this.picClose.MouseEnter += new System.EventHandler(this.picClose_MouseEnter);
+			this.picClose.MouseLeave += new System.EventHandler(this.picClose_MouseLeave);
 			// 
 			// picTitleBar
 			// 
@@ -47,6 +64,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
 			this.ClientSize = new System.Drawing.Size(300, 573);
+			this.Controls.Add(this.picClose);
 			this.Controls.Add(this.picTitleBar);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "frmMain";
@@ -54,6 +72,7 @@
 			this.Text = "Clone Hero - Full Series Randomizer";
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseDown);
+			((System.ComponentModel.ISupportInitialize)(this.picClose)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picTitleBar)).EndInit();
 			this.ResumeLayout(false);
 
@@ -62,6 +81,7 @@
 		#endregion
 
 		private System.Windows.Forms.PictureBox picTitleBar;
+		private System.Windows.Forms.PictureBox picClose;
 	}
 }
 

@@ -103,6 +103,16 @@ namespace FSRandomizer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap TitleBackground {
+            get {
+                object obj = ResourceManager.GetObject("TitleBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TitleBar {
             get {
                 object obj = ResourceManager.GetObject("TitleBar", resourceCulture);
