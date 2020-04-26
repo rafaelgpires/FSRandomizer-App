@@ -141,6 +141,17 @@ namespace FSRandomizer {
 			}
 		}
 
+		/* FSCharts Input */
+		public string txtFSCharts_Default = @"D:\Downloads\Original Series.zip";
+		public void txtFSCharts_Parse(string input) {
+			if (string.IsNullOrEmpty(input)) {
+				//Set FSCharts to false to prevent execution with previous value
+				this.readHash.gotHash = false;
+			} else {
+				//Do stuff
+			}
+		}
+
 		/* TextBox Event Handlers */
 		private void txtKeyDown(object sender, KeyEventArgs e) {
 			//Tab to next control on enter

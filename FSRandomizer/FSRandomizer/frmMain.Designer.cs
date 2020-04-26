@@ -30,21 +30,26 @@
         {
 			this.txtFSList = new System.Windows.Forms.TextBox();
 			this.pnlFSList = new System.Windows.Forms.Panel();
+			this.pnlCHFolder = new System.Windows.Forms.Panel();
+			this.txtCHFolder = new System.Windows.Forms.TextBox();
 			this.picLabelCHFolder = new System.Windows.Forms.PictureBox();
 			this.picLabelFSList = new System.Windows.Forms.PictureBox();
 			this.btnTransferList = new System.Windows.Forms.Button();
 			this.picCHLogo = new System.Windows.Forms.PictureBox();
 			this.picClose = new System.Windows.Forms.PictureBox();
 			this.picTitleBar = new System.Windows.Forms.PictureBox();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.txtCHFolder = new System.Windows.Forms.TextBox();
+			this.picLabelFSCharts = new System.Windows.Forms.PictureBox();
+			this.pnlFSCharts = new System.Windows.Forms.Panel();
+			this.txtFSCharts = new System.Windows.Forms.TextBox();
 			this.pnlFSList.SuspendLayout();
+			this.pnlCHFolder.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picLabelCHFolder)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picLabelFSList)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picCHLogo)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picClose)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picTitleBar)).BeginInit();
-			this.panel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picLabelFSCharts)).BeginInit();
+			this.pnlFSCharts.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// txtFSList
@@ -70,6 +75,31 @@
 			this.pnlFSList.Name = "pnlFSList";
 			this.pnlFSList.Size = new System.Drawing.Size(280, 32);
 			this.pnlFSList.TabIndex = 6;
+			// 
+			// pnlCHFolder
+			// 
+			this.pnlCHFolder.BackColor = System.Drawing.Color.White;
+			this.pnlCHFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnlCHFolder.Controls.Add(this.txtCHFolder);
+			this.pnlCHFolder.Location = new System.Drawing.Point(10, 310);
+			this.pnlCHFolder.Name = "pnlCHFolder";
+			this.pnlCHFolder.Size = new System.Drawing.Size(280, 32);
+			this.pnlCHFolder.TabIndex = 8;
+			// 
+			// txtCHFolder
+			// 
+			this.txtCHFolder.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txtCHFolder.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtCHFolder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+			this.txtCHFolder.Location = new System.Drawing.Point(5, 5);
+			this.txtCHFolder.Name = "txtCHFolder";
+			this.txtCHFolder.Size = new System.Drawing.Size(270, 18);
+			this.txtCHFolder.TabIndex = 4;
+			this.txtCHFolder.Text = "D:\\Games\\Clone Hero\\";
+			this.txtCHFolder.Click += new System.EventHandler(this.txtCHFolder_Click);
+			this.txtCHFolder.Enter += new System.EventHandler(this.txtEnterFocus);
+			this.txtCHFolder.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
+			this.txtCHFolder.Leave += new System.EventHandler(this.txtLeaveFocus);
 			// 
 			// picLabelCHFolder
 			// 
@@ -143,30 +173,38 @@
 			this.picTitleBar.TabIndex = 0;
 			this.picTitleBar.TabStop = false;
 			// 
-			// panel1
+			// picLabelFSCharts
 			// 
-			this.panel1.BackColor = System.Drawing.Color.White;
-			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel1.Controls.Add(this.txtCHFolder);
-			this.panel1.Location = new System.Drawing.Point(10, 310);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(280, 32);
-			this.panel1.TabIndex = 8;
+			this.picLabelFSCharts.Image = global::FSRandomizer.Properties.Resources.Label_Full_Series_Charts;
+			this.picLabelFSCharts.Location = new System.Drawing.Point(10, 364);
+			this.picLabelFSCharts.Name = "picLabelFSCharts";
+			this.picLabelFSCharts.Size = new System.Drawing.Size(100, 17);
+			this.picLabelFSCharts.TabIndex = 9;
+			this.picLabelFSCharts.TabStop = false;
 			// 
-			// txtCHFolder
+			// pnlFSCharts
 			// 
-			this.txtCHFolder.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.txtCHFolder.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtCHFolder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
-			this.txtCHFolder.Location = new System.Drawing.Point(5, 5);
-			this.txtCHFolder.Name = "txtCHFolder";
-			this.txtCHFolder.Size = new System.Drawing.Size(270, 18);
-			this.txtCHFolder.TabIndex = 4;
-			this.txtCHFolder.Text = "D:\\Games\\Clone Hero\\";
-			this.txtCHFolder.Click += new System.EventHandler(this.txtCHFolder_Click);
-			this.txtCHFolder.Enter += new System.EventHandler(this.txtEnterFocus);
-			this.txtCHFolder.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
-			this.txtCHFolder.Leave += new System.EventHandler(this.txtLeaveFocus);
+			this.pnlFSCharts.BackColor = System.Drawing.Color.White;
+			this.pnlFSCharts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pnlFSCharts.Controls.Add(this.txtFSCharts);
+			this.pnlFSCharts.Location = new System.Drawing.Point(10, 388);
+			this.pnlFSCharts.Name = "pnlFSCharts";
+			this.pnlFSCharts.Size = new System.Drawing.Size(280, 32);
+			this.pnlFSCharts.TabIndex = 9;
+			// 
+			// txtFSCharts
+			// 
+			this.txtFSCharts.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txtFSCharts.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.txtFSCharts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+			this.txtFSCharts.Location = new System.Drawing.Point(5, 5);
+			this.txtFSCharts.Name = "txtFSCharts";
+			this.txtFSCharts.Size = new System.Drawing.Size(270, 18);
+			this.txtFSCharts.TabIndex = 4;
+			this.txtFSCharts.Text = "D:\\Downloads\\Original Series.zip";
+			this.txtFSCharts.Enter += new System.EventHandler(this.txtEnterFocus);
+			this.txtFSCharts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
+			this.txtFSCharts.Leave += new System.EventHandler(this.txtLeaveFocus);
 			// 
 			// frmMain
 			// 
@@ -174,7 +212,9 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
 			this.ClientSize = new System.Drawing.Size(300, 573);
-			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.pnlFSCharts);
+			this.Controls.Add(this.picLabelFSCharts);
+			this.Controls.Add(this.pnlCHFolder);
 			this.Controls.Add(this.picLabelCHFolder);
 			this.Controls.Add(this.pnlFSList);
 			this.Controls.Add(this.picLabelFSList);
@@ -190,13 +230,16 @@
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseDown);
 			this.pnlFSList.ResumeLayout(false);
 			this.pnlFSList.PerformLayout();
+			this.pnlCHFolder.ResumeLayout(false);
+			this.pnlCHFolder.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picLabelCHFolder)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picLabelFSList)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picCHLogo)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picClose)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picTitleBar)).EndInit();
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picLabelFSCharts)).EndInit();
+			this.pnlFSCharts.ResumeLayout(false);
+			this.pnlFSCharts.PerformLayout();
 			this.ResumeLayout(false);
 
         }
@@ -211,8 +254,11 @@
 		private System.Windows.Forms.PictureBox picLabelFSList;
 		private System.Windows.Forms.Panel pnlFSList;
 		private System.Windows.Forms.PictureBox picLabelCHFolder;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel pnlCHFolder;
 		private System.Windows.Forms.TextBox txtCHFolder;
+		private System.Windows.Forms.PictureBox picLabelFSCharts;
+		private System.Windows.Forms.Panel pnlFSCharts;
+		private System.Windows.Forms.TextBox txtFSCharts;
 	}
 }
 
