@@ -80,7 +80,7 @@ namespace FSRandomizer {
 		private void btnTransferList_Click(object sender, EventArgs e) {
 			//Check if we have the required inputs
 			//TODO: Check the other 3 inputs
-			if(!this.readHash.success) {
+			if(!this.readHash.gotHash) {
 				new error("You haven't given a valid Full Series list.", "Full Series List", false);
 				txtFSList.Focus();
 			} else {
@@ -105,6 +105,7 @@ namespace FSRandomizer {
 				//Load defaults
 				txtFSList.ForeColor = Color.FromArgb(150, 150, 150);
 				txtFSList.Text = "http://www.fsrandomizer.com/5ea458d733d32";
+				this.readHash.gotHash = false;
 			} else {
 				//Read user input
 				if (!this.readHash.getHash(txtFSList.Text)) {
