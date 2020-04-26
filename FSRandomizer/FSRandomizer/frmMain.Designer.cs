@@ -202,6 +202,7 @@
 			this.txtFSCharts.Size = new System.Drawing.Size(270, 18);
 			this.txtFSCharts.TabIndex = 4;
 			this.txtFSCharts.Text = "D:\\Downloads\\Original Series.zip";
+			this.txtFSCharts.Click += new System.EventHandler(this.txtFSCharts_Click);
 			this.txtFSCharts.Enter += new System.EventHandler(this.txtEnterFocus);
 			this.txtFSCharts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
 			this.txtFSCharts.Leave += new System.EventHandler(this.txtLeaveFocus);

@@ -143,6 +143,17 @@ namespace FSRandomizer {
 
 		/* FSCharts Input */
 		public string txtFSCharts_Default = @"D:\Downloads\Original Series.zip";
+		private void txtFSCharts_Click(object sender, EventArgs e) {
+			//Show FileBrowserDialog on click
+			OpenFileDialog filePicker = new OpenFileDialog();
+			filePicker.Filter = "Zip file (*.zip)|*.zip";
+			DialogResult result = filePicker.ShowDialog();
+			if(result == DialogResult.OK) {
+				TextBox textbox = (TextBox)sender;
+				textbox.Text = filePicker.FileName;
+				textbox.SelectionStart = textbox.Text.Length; //Put caret at the end
+			}
+		}
 		public void txtFSCharts_Parse(string input) {
 			if (string.IsNullOrEmpty(input)) {
 				//Set FSCharts to false to prevent execution with previous value
