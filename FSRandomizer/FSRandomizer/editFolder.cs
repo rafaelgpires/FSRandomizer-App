@@ -9,12 +9,12 @@ namespace FSRandomizer {
 	class editFolder {
 		private List<List<List<string>>> songlist;	//List of songs gotten from the folder when done
 		private string RealFSSize;			//Intended FSFolder size as given by the Website
-		private string FSFolderLoc;			//Confirmed location of Standardized FS folder
 		private string CHSongsFolderLoc;		//Confirmed location of CH's /songs/
 		private string SettingsFile;			//Confirmed location of CH's settings.ini
 		private string UserCHSongsFolderLoc;            //Confirmed location of CH's /songs_backup/
 		private bool unzipped = false;			//Confirmed unzipping of FSFolder
 		private bool listsongs = false;                 //Confirmed this.songlist is ready for processing
+		public string FSFolderLoc;			//Confirmed location of Standardized FS folder
 		public string CHFolderLoc;			//Confirmed location of CH installation
 		public string error;				//Error message to send when returning false
 
@@ -40,21 +40,20 @@ namespace FSRandomizer {
 			this.CHFolderLoc = CHFolderLoc;
 			return true;
 		}
-		public void readFSFolder(string FSFolderLoc) {
-			FSFolderLoc = "D:\\Backups\\Game Files\\Clone Hero\\Songs\\Original Series.zip"; //TODO: Remove hardcoding on Design
-
+		public bool readFSFolder(string FSFolderLoc) {
 			//Check if it exists
-			if (!File.Exists(FSFolderLoc)) new die("Couldn't access the Full Series zipped file.");
+			if (!File.Exists(FSFolderLoc)) { this.error = "Couldn't access the Full Series zipped file."; this.FSFolderLoc = ""; return false; }
 
 			//Check validity by comparing file size
-			if(new FileInfo(FSFolderLoc).Length.ToString() != this.RealFSSize) new die("Given file isn't identical to the file I expected.");
+			if (new FileInfo(FSFolderLoc).Length.ToString() != this.RealFSSize) { this.error = "Invalid Charts file...\nRemember to use the up-to-date file from our website!"; this.FSFolderLoc = ""; return false; }
 
 			//File is valid, store it
 			this.FSFolderLoc = FSFolderLoc;
+			return true;
 		}
 		public void prepareCHFolder() {
 			//Check if readCHFolder has already been ran successfully
-			if (string.IsNullOrEmpty(this.CHSongsFolderLoc)) { new die("Clone Hero folder not selected yet."); }
+			if (string.IsNullOrEmpty(this.CHSongsFolderLoc)) { new error("Internal error.\nClone Hero Songs folder location unexpectedly unknown.\n\nPlease fix.", "Fatal Error", true); }
 
 			//Check if the directory has anything on it
 			string UserCHSongsFolderLoc;

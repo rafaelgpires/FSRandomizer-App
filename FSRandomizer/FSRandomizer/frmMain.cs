@@ -37,7 +37,6 @@ namespace FSRandomizer {
 			this.readHash = new readHash();         //GET.: (Online) Breakdown List
 
 			/*
-			editFolder.readFSFolder("");                    //GET.: FSFolder's path
 			editFolder.prepareCHFolder();                   //DO..: Clean CHSongsFolder
 			editFolder.unzipFSFolder();                     //DO..: Extract FSFolder
 			editFolder.prepareFSFolder();                   //GET.: FSFolder's songs
@@ -81,17 +80,31 @@ namespace FSRandomizer {
 			/* Check if we have the required inputs */
 			//Check hash
 			if(!this.readHash.gotHash) {
-				new error("You haven't given a valid Full Series list.", "Full Series List", false);
+				new error("You haven't given a valid Full Series list URL.", "Full Series List", false);
 				txtFSList.Focus();
 				return;
 			}
 			//Check CH Folder
 			if(string.IsNullOrEmpty(editFolder.CHFolderLoc)) {
-				new error("You haven't given a valid Clone Hero location.", "Clone Hero Folder", false);
+				new error("You haven't given a valid Clone Hero folder location.", "Clone Hero Folder", false);
 				txtCHFolder.Focus();
 				return;	
 			}
 			//TODO: Check the last input
+			if(string.IsNullOrEmpty(editFolder.FSFolderLoc)) {
+				new error("You haven't given a valid Full Series Charts file.", "Full Series Charts", false);
+				txtFSCharts.Focus();
+				return;
+			}
+
+			/* Attempt Executing */
+			//Disable controllers first, this might take a while
+			btnTransferList.Enabled = false;
+			txtFSList.Enabled = false;
+			txtCHFolder.Enabled = false;
+			txtFSCharts.Enabled = false;
+
+			//Prepare Clone Hero Folder
 
 			//TODO: stuff
 			//Remember to disable controller + textboxes while doing stuff and re-enabling when it's done or on error
@@ -157,9 +170,14 @@ namespace FSRandomizer {
 		public void txtFSCharts_Parse(string input) {
 			if (string.IsNullOrEmpty(input)) {
 				//Set FSCharts to false to prevent execution with previous value
-				this.readHash.gotHash = false;
+				this.editFolder.FSFolderLoc = "";
 			} else {
-				//Do stuff
+				//Read FSCharts file
+				if(!editFolder.readFSFolder(input)) {
+					new error(this.editFolder.error, "Full Series Charts", false);
+					txtFSCharts.SelectionStart = txtFSCharts.Text.Length;
+					txtFSCharts.Focus();
+				}
 			}
 		}
 
