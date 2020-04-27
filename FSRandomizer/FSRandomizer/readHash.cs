@@ -3,19 +3,19 @@ using System.Net;
 
 namespace FSRandomizer {
 	class readHash {
+		public string error;                    //Error string
+		public bool gotHash = false;		//Check if getHash has been ran successfully
 		public List<List<List<string>>> fslist; //[chapter][key](diff, name, game)
 		private List<List<string>> songlist;	//[key](diff, name, game)
         
-		public readHash() {
-			this.getBreakdown();
-		}
-		public void getHash(string hash) {
-			hash = "http://localhost/FSRandomizer/docs/?uniqueID=5ea458d733d32&output=hash"; //TODO: Remove hardcoding when form is complete
-			
+		public readHash() { this.getBreakdown(); }
+		public bool getHash(string hash) {
 			//Download Hash
-			WebClient client = new WebClient();
-			client.Encoding = System.Text.Encoding.UTF8;
-			hash = client.DownloadString(hash);
+			try {
+				WebClient client = new WebClient();
+				client.Encoding = System.Text.Encoding.UTF8;
+				hash = client.DownloadString(hash + "?output=hash");
+			} catch { this.error = "Couldn't download list from your link."; this.gotHash = false; return false; }
 			
 			//Build the full series list
 			this.fslist = new List<List<List<string>>>();
@@ -49,7 +49,11 @@ namespace FSRandomizer {
 					//Add chapter to list
 					this.fslist.Add(songs);
 				}
-			} catch { new die("Error: Couldn't recognise a valid Full Series list from the link given."); }
+			} catch { this.error = "Couldn't recognise a valid Full Series list from the link given."; this.gotHash = false;  return false; }
+
+			//All went well
+			this.gotHash = true;
+			return true;
 		}
 
 		private void getBreakdown() {
@@ -65,11 +69,10 @@ namespace FSRandomizer {
 				for (int breakdownKey = 0; breakdownKey < breakdown.Length; ++breakdownKey) {
 					string[] song = breakdown[breakdownKey].Remove(0, 6).Trim().Split('|');
 					this.songlist.Add(new List<string>());
-					for (int songKey = 0; songKey < song.Length; ++songKey) {
-					this.songlist[breakdownKey].Add(song[songKey].Trim());
-					}
+					for (int songKey = 0; songKey < song.Length; ++songKey)
+						this.songlist[breakdownKey].Add(song[songKey].Trim());
 				}
-			} catch { new die("Error: Couldn't retrieve the Master FC Breakdown. Maybe website is down?"); }
+			} catch { new error("Couldn't retrieve the Master FC Breakdown. Maybe website is down?", "Fatal Error", true); return; }
 		}
     }
 }
