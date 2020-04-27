@@ -136,8 +136,8 @@ namespace FSRandomizer {
 					int prog = (int)Math.Ceiling((double)(trackProgress.Result / 660m * 100));
 					int mins = 14 - ((int)Math.Ceiling((double)(prog / 8m)));
 					progress.Value = (int)Math.Round((prog * 0.90) + 5);
-					if (trackProgress.Result > 220 && this.progState == 2) { progress.SetState(3); this.progState = 3; lblETA.BackColor = Color.Yellow; } // >33%
-					if (trackProgress.Result > 440 && this.progState == 3) { progress.SetState(1); this.progState = 1; lblETA.BackColor = Color.Green; } // >66%
+					if (trackProgress.Result > 220 && this.progState == 2) { progress.SetState(3); this.progState = 3; lblETA.ForeColor = Color.Yellow; } // >33%
+					if (trackProgress.Result > 440 && this.progState == 3) { progress.SetState(1); this.progState = 1; lblETA.ForeColor = Color.Green; } // >66%
 					lblETA.Text = (mins < 10 ? (" " + mins) : mins.ToString()) + " minutes";
 
 					//Check if we can leave
