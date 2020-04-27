@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+
 namespace FSRandomizer {
 	public partial class frmMain : Form {
 		/* Drag window on MouseDown
@@ -29,7 +24,10 @@ namespace FSRandomizer {
 		public frmMain() { InitializeComponent(); }
 		private void frmMain_Load(object sender, EventArgs e) {
 			//Prevent it automatically focusing a textbox
-			this.ActiveControl = null;
+			this.ActiveControl = picCHLogo;
+
+			//Progress bar state
+			progTransfer.SetState(2);
 
 			//Initialize FSRandomizer Variables
 			this.editFolder = new editFolder();	//GET.: (Online) FSFolder Size
@@ -45,7 +43,7 @@ namespace FSRandomizer {
 					SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
 				} else {
 					//Double click
-					this.ActiveControl = null; //Remove focus
+					this.ActiveControl = picCHLogo; //Remove focus
 					
 				}
 			}
@@ -96,8 +94,13 @@ namespace FSRandomizer {
 			txtCHFolder.Enabled = false;
 			txtFSCharts.Enabled = false;
 
+			//Show progress bar and labels
+			progTransfer.Visible = true;
+			lblETA.Visible = true;
+			lblProg.Visible = true;
+
 			//Execute Transfer List
-			if(!editFolder.transferList(readHash)) new error(editFolder.error, "Transfer List", false);
+			if(!editFolder.transferList(readHash, ref progTransfer, ref lblProg, ref lblETA)) new error(editFolder.error, "Transfer List", false);
 			else {
 				MessageBox.Show("Full Series Randomizer has transferred your list to Clone Hero.\n\nRemember to Scan Songs!\nROCK ON!!", "Full List Randomized", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				Application.Exit();
@@ -108,6 +111,16 @@ namespace FSRandomizer {
 			txtFSList.Enabled = true;
 			txtCHFolder.Enabled = true;
 			txtFSCharts.Enabled = true;
+			progTransfer.Visible = false;
+
+			//Default progress bar and labels
+			lblETA.Visible = false;
+			lblProg.Visible = false;
+			progTransfer.Value = 0;
+			progTransfer.SetState(2);
+			lblETA.Text = "15 minutes";
+			lblETA.ForeColor = Color.Red;
+			lblProg.Text = "Parsing Input...";
 		}
 
 		/* FSList Input */
@@ -218,6 +231,14 @@ namespace FSRandomizer {
 
 			//Call Parser
 			this.GetType().GetMethod(textbox.Name + "_Parse").Invoke(this, new object[]{ input });
+		}
+
+		/* Label Text Change */
+		private void lblTextChange(object sender, EventArgs e) {
+			//Resize
+			Label label = (Label)sender;
+			int X = (int)Math.Round((double)((this.Width - label.Size.Width) / 2m), 0);
+			label.Location = new Point(X, label.Location.Y);
 		}
 	}
 }

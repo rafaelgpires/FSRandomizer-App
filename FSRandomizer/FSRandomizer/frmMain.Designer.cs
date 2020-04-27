@@ -41,6 +41,9 @@
 			this.picLabelFSCharts = new System.Windows.Forms.PictureBox();
 			this.pnlFSCharts = new System.Windows.Forms.Panel();
 			this.txtFSCharts = new System.Windows.Forms.TextBox();
+			this.progTransfer = new System.Windows.Forms.ProgressBar();
+			this.lblETA = new System.Windows.Forms.Label();
+			this.lblProg = new System.Windows.Forms.Label();
 			this.pnlFSList.SuspendLayout();
 			this.pnlCHFolder.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picLabelCHFolder)).BeginInit();
@@ -207,12 +210,50 @@
 			this.txtFSCharts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
 			this.txtFSCharts.Leave += new System.EventHandler(this.txtLeaveFocus);
 			// 
+			// progTransfer
+			// 
+			this.progTransfer.Location = new System.Drawing.Point(50, 523);
+			this.progTransfer.Name = "progTransfer";
+			this.progTransfer.Size = new System.Drawing.Size(200, 4);
+			this.progTransfer.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+			this.progTransfer.TabIndex = 10;
+			this.progTransfer.Visible = false;
+			// 
+			// lblETA
+			// 
+			this.lblETA.AutoSize = true;
+			this.lblETA.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblETA.ForeColor = System.Drawing.Color.Red;
+			this.lblETA.Location = new System.Drawing.Point(119, 447);
+			this.lblETA.Name = "lblETA";
+			this.lblETA.Size = new System.Drawing.Size(63, 13);
+			this.lblETA.TabIndex = 11;
+			this.lblETA.Text = "15 minutes";
+			this.lblETA.Visible = false;
+			this.lblETA.TextChanged += new System.EventHandler(this.lblTextChange);
+			// 
+			// lblProg
+			// 
+			this.lblProg.AutoSize = true;
+			this.lblProg.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblProg.Location = new System.Drawing.Point(112, 537);
+			this.lblProg.Name = "lblProg";
+			this.lblProg.Size = new System.Drawing.Size(76, 13);
+			this.lblProg.TabIndex = 12;
+			this.lblProg.Text = "Parsing Input...";
+			this.lblProg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblProg.Visible = false;
+			this.lblProg.TextChanged += new System.EventHandler(this.lblTextChange);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
 			this.ClientSize = new System.Drawing.Size(300, 573);
+			this.Controls.Add(this.lblProg);
+			this.Controls.Add(this.lblETA);
+			this.Controls.Add(this.progTransfer);
 			this.Controls.Add(this.pnlFSCharts);
 			this.Controls.Add(this.picLabelFSCharts);
 			this.Controls.Add(this.pnlCHFolder);
@@ -242,6 +283,7 @@
 			this.pnlFSCharts.ResumeLayout(false);
 			this.pnlFSCharts.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 
@@ -260,6 +302,9 @@
 		private System.Windows.Forms.PictureBox picLabelFSCharts;
 		private System.Windows.Forms.Panel pnlFSCharts;
 		private System.Windows.Forms.TextBox txtFSCharts;
+		private System.Windows.Forms.ProgressBar progTransfer;
+		private System.Windows.Forms.Label lblETA;
+		private System.Windows.Forms.Label lblProg;
 	}
 }
 
