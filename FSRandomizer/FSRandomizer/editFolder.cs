@@ -178,7 +178,7 @@ namespace FSRandomizer {
 
 							//Change ini and move to chapter folder
 							string newName = "[" + padSongNum + "] " + encore + song[1];
-							this.changeSongIni(songName[0], newName, chapterSong, song[0]);
+							if (!this.changeSongIni(songName[0], newName, chapterSong, song[0])) return false;
 							try { Directory.Move(songName[0], ChapterFolder + "\\" + newName); }
 							catch { this.error = "Couldn't move song to chapter folder.\nTry running as admin, I'll have to unzip again..."; return false; }
 						}
@@ -240,7 +240,7 @@ namespace FSRandomizer {
 			try { this.RealFSSize = client.DownloadString("http://localhost/FSRandomizer/docs/RealFSSize.txt"); } //TODO: Update on host
 			catch { new error("Couldn't retrieve file verification online to confirm there's no problems with your folder. Maybe website is down?", "Fatal Error", true); }
 		}
-		private void changeSongIni(string songPath, string songName, int playlistTrack, string difficulty) {
+		private bool changeSongIni(string songPath, string songName, int playlistTrack, string difficulty) {
 			string songIniPath = songPath + "\\song.ini";
 			string[] songIni;
 
@@ -279,8 +279,10 @@ namespace FSRandomizer {
 				string configFile = string.Join("\n", newFile);
 				File.WriteAllText(songIniPath, configFile);
 			}
-			catch { new die("Couldn't change '" + "'s song.ini at '" + songPath + "'. Try running as admin?"); }
+			catch { this.error = "Couldn't change '" + "'s song.ini at '" + songPath + "'. Try running as administrator?"; return false; }
 
+			//All went well
+			return true;
 		}
 		private int convertGame2Key(string Game) {
 			switch (Game) {
@@ -296,7 +298,7 @@ namespace FSRandomizer {
 				case "Guitar Hero 3":		return 9;
 				case "Guitar Hero: WT":		return 10;
 				default:
-					new die("Error converting game names.");
+					new error("Internal error.\nError converting game names.\n\nPlease fix.", "Fatal Error", true);
 					return 0;
 			}
 		}
@@ -314,7 +316,7 @@ namespace FSRandomizer {
 				case 9: return "Guitar Hero III";
 				case 10: return "Guitar Hero World Tour";
 				default:
-					new die("Error converting game names.");
+					new error("Internal error.\nError converting game name keys.\n\nPlease fix.", "Fatal Error", true);
 					return "";
 			}
 		}
