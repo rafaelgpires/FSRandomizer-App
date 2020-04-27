@@ -7,7 +7,7 @@ namespace FSRandomizer {
 				MessageBox.Show(error, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Application.Exit();
 			} else {
-				MessageBox.Show(error, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(error, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 	}

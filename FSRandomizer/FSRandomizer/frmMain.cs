@@ -35,14 +35,6 @@ namespace FSRandomizer {
 			//Initialize FSRandomizer Variables
 			this.editFolder = new editFolder();	//GET.: (Online) FSFolder Size
 			this.readHash = new readHash();         //GET.: (Online) Breakdown List
-
-			/*
-			editFolder.prepareCHFolder();                   //DO..: Clean CHSongsFolder
-			editFolder.unzipFSFolder();                     //DO..: Extract FSFolder
-			editFolder.prepareFSFolder();                   //GET.: FSFolder's songs
-			editFolder.createChapters(readHash.fslist);     //DO..: Create the chapters
-			editFolder.changeSettings();			//DO..: Change CH settings
-			*/
 		}
 
 		/* Drag/Double-click Form */
@@ -104,10 +96,18 @@ namespace FSRandomizer {
 			txtCHFolder.Enabled = false;
 			txtFSCharts.Enabled = false;
 
-			//Prepare Clone Hero Folder
+			//Execute Transfer List
+			if(!editFolder.transferList()) new error(editFolder.error, "Transfer List", false);
+			else {
+				MessageBox.Show("Full Series Randomizer has transferred your list to Clone Hero.\n\nRemember to Scan Songs!\nROCK ON!!", "Full List Randomized", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				Application.Exit();
+			}
 
-			//TODO: stuff
-			//Remember to disable controller + textboxes while doing stuff and re-enabling when it's done or on error
+			//Re-enable controllers
+			btnTransferList.Enabled = true;
+			txtFSList.Enabled = true;
+			txtCHFolder.Enabled = true;
+			txtFSCharts.Enabled = true;
 		}
 
 		/* FSList Input */
