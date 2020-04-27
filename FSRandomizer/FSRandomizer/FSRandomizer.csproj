@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="error.cs" />
     <Compile Include="editFolder.cs" />
+    <Compile Include="progBarStates.cs" />
     <Compile Include="readHash.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
