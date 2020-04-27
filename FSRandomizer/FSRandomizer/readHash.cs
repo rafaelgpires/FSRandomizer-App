@@ -72,7 +72,7 @@ namespace FSRandomizer {
 					for (int songKey = 0; songKey < song.Length; ++songKey)
 						this.songlist[breakdownKey].Add(song[songKey].Trim());
 				}
-			} catch { new error("Couldn't retrieve the Master FC Breakdown. Maybe website is down?", "Fatal Error", true); }
+			} catch { new error("Couldn't retrieve the Master FC Breakdown. Maybe website is down?", "Fatal Error", true); return; }
 		}
     }
 }

@@ -12,12 +12,12 @@ namespace FSRandomizer {
 		private string RealFSSize;			//Intended FSFolder size as given by the Website
 		private string CHSongsFolderLoc;		//Confirmed location of CH's /songs/
 		private string SettingsFile;			//Confirmed location of CH's settings.ini
-		private string UserCHSongsFolderLoc;            //Confirmed location of CH's /songs_backup/
 		private bool unzipped = false;			//Confirmed unzipping of FSFolder
 		private bool listsongs = false;                 //Confirmed this.songlist is ready for processing
 		public string FSFolderLoc;			//Confirmed location of Standardized FS folder
 		public string CHFolderLoc;			//Confirmed location of CH installation
-		public string error;				//Error message to send when returning false
+		public string error;                            //Error message to send when returning false
+		public bool FolderPrepared;			//Confirmed successful run of prepareCHFolder()
 
 		/* Public Methods */
 		public editFolder () { this.getRealFSSize(); }
@@ -53,10 +53,11 @@ namespace FSRandomizer {
 			this.FSFolderLoc = FSFolderLoc;
 			return true;
 		}
-		public bool transferList() {
+		public bool transferList(readHash readHash) {
 			if (!this.prepareCHFolder()) return false;
 			if (!this.unzipFSFolder()) return false;
 			if (!this.prepareFSFolder()) return false;
+			if (!this.createChapters(readHash.fslist)) return false;
 			if (!this.changeSettings()) return false;
 			return true;
 		}
@@ -64,7 +65,7 @@ namespace FSRandomizer {
 		/* Private Methods (Transfer List) */
 		private bool prepareCHFolder() {
 			//Check if readCHFolder has already been ran successfully
-			if (string.IsNullOrEmpty(this.CHSongsFolderLoc)) { new error("Internal error.\nClone Hero Songs folder location unexpectedly unknown.\n\nPlease fix.", "Fatal Error", true); }
+			if (string.IsNullOrEmpty(this.CHSongsFolderLoc)) { new error("Internal error.\nClone Hero Songs folder location unexpectedly unknown.\n\nPlease fix.", "Fatal Error", true); this.FolderPrepared = false; return false; }
 
 			//Check if the directory has anything on it
 			string UserCHSongsFolderLoc;
@@ -72,7 +73,7 @@ namespace FSRandomizer {
 				//Create a folder to store user's previous content
 				UserCHSongsFolderLoc = Path.GetDirectoryName(this.CHSongsFolderLoc) + "\\songs_backup";
 				try { Directory.CreateDirectory(UserCHSongsFolderLoc); }
-				catch { this.error = "Couldn't create directory songs_backup to store your songs in.\nTry running as administrator or deleting any existing songs_bakcup directory."; return false; }
+				catch { this.error = "Couldn't create directory songs_backup to store your songs in.\nTry running as administrator or deleting any existing songs_bakcup directory."; this.FolderPrepared = false; return false; }
 				
 				//Loop through the content of the user's directory and put it all in the created folder
 				try {
@@ -83,21 +84,19 @@ namespace FSRandomizer {
 					//Take care of directories
 					foreach (string dir in Directory.GetDirectories(this.CHSongsFolderLoc))
 						Directory.Move(dir, UserCHSongsFolderLoc + "\\" + Path.GetFileName(dir));
-				} catch { this.error = "Couldn't move your stuff to the new directory.\nTry running as administrator or empty out your songs folder for now."; return false; }
-
-				//All went well, store created folder
-				this.UserCHSongsFolderLoc = UserCHSongsFolderLoc;
+				} catch { this.error = "Couldn't move your stuff to the new directory.\nTry running as administrator or empty out your songs folder for now."; this.FolderPrepared = false; return false; }
 			}
 
 			//Either all went well or nothing needs to be done
+			this.FolderPrepared = true;
 			return true;
 		}
 		private bool unzipFSFolder() {
 			//Check if readFSFolder has already been ran successfully
-			if(string.IsNullOrEmpty(this.FSFolderLoc)) { new error("Internal error.\nFull Series file location unexpectedly unknown.\n\nPlease fix.", "Fatal Error", true); }
+			if(string.IsNullOrEmpty(this.FSFolderLoc)) { new error("Internal error.\nFull Series file location unexpectedly unknown.\n\nPlease fix.", "Fatal Error", true); return false; }
 
 			//Check if CHFolder has been prepared
-			if(string.IsNullOrEmpty(this.UserCHSongsFolderLoc)) { new error("Internal error.\nI moved on without preparing Clone Hero's folder?\n\nPlease fix.", "Fatal Error", true); }
+			if(!this.FolderPrepared) { new error("Internal error.\nI moved on without preparing Clone Hero's folder?\n\nPlease fix.", "Fatal Error", true); return false; }
 
 			//Unzip
 			//TODO: Add progress bar, this is gonna take a while
@@ -109,7 +108,7 @@ namespace FSRandomizer {
 		}
 		private bool prepareFSFolder() {
 			//Check if it's been unzipped before working with it
-			if(this.unzipped != true) { new error("Internal error.\nExpected file to be unzipped.\n\nPlease fix.", "Fatal Error", true); }
+			if(this.unzipped != true) { new error("Internal error.\nExpected file to be unzipped.\n\nPlease fix.", "Fatal Error", true); return false; }
 
 			//Start going through the extracted directories and build the array of games with songs
 			try {
@@ -142,7 +141,7 @@ namespace FSRandomizer {
 		}
 		private bool createChapters(List<List<List<string>>> fslist) {
 			//Check that songlist is ready to be processed
-			if(this.listsongs != true) { new error("Internal error.\nAttempted to create chapters before being ready.\n\nPlease fix.", "Fatal Error", true); }
+			if(this.listsongs != true) { new error("Internal error.\nAttempted to create chapters before being ready.\n\nPlease fix.", "Fatal Error", true); return false; }
 
 			//Loop through the full series list
 			int SongNum = 1;
@@ -170,7 +169,9 @@ namespace FSRandomizer {
 
 					//Find them in the FSFolder list (songlist)
 					bool found = false;
-					foreach (List<string> songName in this.songlist[this.convertGame2Key(song[2])]) {
+					int GameKey = convertGame2Key(song[2]);
+					if (GameKey == -1) { new error("Internal error.\nError converting game names.\n\nPlease fix.", "Fatal Error", true); return false; }
+					foreach (List<string> songName in this.songlist[GameKey]) {
 						if (song[1].ToLower() == songName[1].ToLower()) {
 							//Found the song in a local folder
 							found = true;
@@ -194,7 +195,7 @@ namespace FSRandomizer {
 			foreach(List<List<string>> Game in this.songlist) {
 				string GameName = Path.GetDirectoryName(Game[0][0]);
 				try { Directory.Delete(GameName); }
-				catch { new error("Couldn't delete leftover folders...\nGood news is: I was almost done anyway!\n\nPlease change the following setting manually:\n    - [Gameplay] Default Sorting: Change to \"Playlist\"\n\nRemember to Scan Songs!", "Fatally Good Error", true); }
+				catch { new error("Couldn't delete leftover folders...\nGood news is: I was almost done anyway!\n\nPlease change the following setting manually:\n    - [Gameplay] Default Sorting: Change to \"Playlist\"\n\nRemember to Scan Songs!", "Fatally Good Error", true); return false; }
 			}
 
 			//All went well
@@ -226,7 +227,7 @@ namespace FSRandomizer {
 				//Write the new config file
 				string newSettingsFile = string.Join("\n", newSettings);
 				File.WriteAllText(SettingsFile, newSettingsFile);
-			} catch { new error("Couldn't change your Clone Hero settings.\nGood news is: I was almost done anyway!\n\nPlease change the following setting manually:\n    - [Gameplay] Default Sorting: Change to \"Playlist\"\n\nRemember to Scan Songs!", "Fatally Good Error", true); }
+			} catch { new error("Couldn't change your Clone Hero settings.\nGood news is: I was almost done anyway!\n\nPlease change the following setting manually:\n    - [Gameplay] Default Sorting: Change to \"Playlist\"\n\nRemember to Scan Songs!", "Fatally Good Error", true); return false; }
 
 			//All went well
 			return true;
@@ -238,7 +239,7 @@ namespace FSRandomizer {
 			WebClient client = new WebClient();
 			client.Encoding = System.Text.Encoding.UTF8;
 			try { this.RealFSSize = client.DownloadString("http://localhost/FSRandomizer/docs/RealFSSize.txt"); } //TODO: Update on host
-			catch { new error("Couldn't retrieve file verification online to confirm there's no problems with your folder. Maybe website is down?", "Fatal Error", true); }
+			catch { new error("Couldn't retrieve file verification online to confirm there's no problems with your folder. Maybe website is down?", "Fatal Error", true); return; }
 		}
 		private bool changeSongIni(string songPath, string songName, int playlistTrack, string difficulty) {
 			string songIniPath = songPath + "\\song.ini";
@@ -297,27 +298,7 @@ namespace FSRandomizer {
 				case "Guitar Hero 2":		return 8;
 				case "Guitar Hero 3":		return 9;
 				case "Guitar Hero: WT":		return 10;
-				default:
-					new error("Internal error.\nError converting game names.\n\nPlease fix.", "Fatal Error", true);
-					return 0;
-			}
-		}
-		private string convertKey2Folder(int Key) {
-			switch (Key) {
-				case 0: return "Guitar Hero - Aerosmith";
-				case 1: return "Guitar Hero - Metallica";
-				case 2: return "Guitar Hero - Smash Hits";
-				case 3: return "Guitar Hero - Van Halen";
-				case 4: return "Guitar Hero - Warriors of Rock";
-				case 5: return "Guitar Hero 5";
-				case 6: return "Guitar Hero Encore Rock The 80s";
-				case 7: return "Guitar Hero I";
-				case 8: return "Guitar Hero II";
-				case 9: return "Guitar Hero III";
-				case 10: return "Guitar Hero World Tour";
-				default:
-					new error("Internal error.\nError converting game name keys.\n\nPlease fix.", "Fatal Error", true);
-					return "";
+				default: return -1;
 			}
 		}
 	}

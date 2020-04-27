@@ -97,7 +97,7 @@ namespace FSRandomizer {
 			txtFSCharts.Enabled = false;
 
 			//Execute Transfer List
-			if(!editFolder.transferList()) new error(editFolder.error, "Transfer List", false);
+			if(!editFolder.transferList(readHash)) new error(editFolder.error, "Transfer List", false);
 			else {
 				MessageBox.Show("Full Series Randomizer has transferred your list to Clone Hero.\n\nRemember to Scan Songs!\nROCK ON!!", "Full List Randomized", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				Application.Exit();
