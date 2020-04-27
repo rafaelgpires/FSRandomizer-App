@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 namespace FSRandomizer {
-	public partial class frmMain : Form
-	{
+	public partial class frmMain : Form {
 		/* Drag window on MouseDown
 		 * URL: https://www.codeproject.com/Articles/11114/Move-window-form-without-Titlebar-in-C
 		 */
@@ -30,7 +29,7 @@ namespace FSRandomizer {
 		public frmMain() { InitializeComponent(); }
 		private void frmMain_Load(object sender, EventArgs e) {
 			//Prevent it automatically focusing a textbox
-			this.ActiveControl = picCHLogo;
+			this.ActiveControl = null;
 
 			//Initialize FSRandomizer Variables
 			this.editFolder = new editFolder();	//GET.: (Online) FSFolder Size
@@ -46,7 +45,8 @@ namespace FSRandomizer {
 					SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
 				} else {
 					//Double click
-					this.ActiveControl = picCHLogo; //Remove focus
+					this.ActiveControl = null; //Remove focus
+					
 				}
 			}
 		}

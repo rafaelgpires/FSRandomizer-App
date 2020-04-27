@@ -60,7 +60,7 @@
 			this.txtFSList.Location = new System.Drawing.Point(5, 5);
 			this.txtFSList.Name = "txtFSList";
 			this.txtFSList.Size = new System.Drawing.Size(270, 18);
-			this.txtFSList.TabIndex = 1;
+			this.txtFSList.TabIndex = 0;
 			this.txtFSList.Text = "http://www.fsrandomizer.com/5ea458d733d32";
 			this.txtFSList.Enter += new System.EventHandler(this.txtEnterFocus);
 			this.txtFSList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtKeyDown);
@@ -94,7 +94,7 @@
 			this.txtCHFolder.Location = new System.Drawing.Point(5, 5);
 			this.txtCHFolder.Name = "txtCHFolder";
 			this.txtCHFolder.Size = new System.Drawing.Size(270, 18);
-			this.txtCHFolder.TabIndex = 2;
+			this.txtCHFolder.TabIndex = 1;
 			this.txtCHFolder.Text = "D:\\Games\\Clone Hero\\";
 			this.txtCHFolder.Click += new System.EventHandler(this.txtCHFolder_Click);
 			this.txtCHFolder.Enter += new System.EventHandler(this.txtEnterFocus);
@@ -131,7 +131,7 @@
 			this.btnTransferList.Location = new System.Drawing.Point(85, 463);
 			this.btnTransferList.Name = "btnTransferList";
 			this.btnTransferList.Size = new System.Drawing.Size(131, 43);
-			this.btnTransferList.TabIndex = 4;
+			this.btnTransferList.TabIndex = 3;
 			this.btnTransferList.EnabledChanged += new System.EventHandler(this.btnTransferList_EnabledChanged);
 			this.btnTransferList.Click += new System.EventHandler(this.btnTransferList_Click);
 			this.btnTransferList.Enter += new System.EventHandler(this.btnTransferList_Enter);
@@ -200,7 +200,7 @@
 			this.txtFSCharts.Location = new System.Drawing.Point(5, 5);
 			this.txtFSCharts.Name = "txtFSCharts";
 			this.txtFSCharts.Size = new System.Drawing.Size(270, 18);
-			this.txtFSCharts.TabIndex = 3;
+			this.txtFSCharts.TabIndex = 2;
 			this.txtFSCharts.Text = "D:\\Downloads\\Original Series.zip";
 			this.txtFSCharts.Click += new System.EventHandler(this.txtFSCharts_Click);
 			this.txtFSCharts.Enter += new System.EventHandler(this.txtEnterFocus);
