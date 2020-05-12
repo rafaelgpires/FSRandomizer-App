@@ -232,13 +232,5 @@ namespace FSRandomizer {
 			//Call Parser
 			this.GetType().GetMethod(textbox.Name + "_Parse").Invoke(this, new object[]{ input });
 		}
-
-		/* Label Text Change */
-		private void lblTextChange(object sender, EventArgs e) {
-			//Resize
-			Label label = (Label)sender;
-			int X = (int)Math.Round((double)((this.Width - label.Size.Width) / 2m), 0);
-			label.Location = new Point(X, label.Location.Y);
-		}
 	}
 }

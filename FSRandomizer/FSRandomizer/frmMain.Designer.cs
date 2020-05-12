@@ -221,29 +221,26 @@
 			// 
 			// lblETA
 			// 
-			this.lblETA.AutoSize = true;
 			this.lblETA.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblETA.ForeColor = System.Drawing.Color.Red;
-			this.lblETA.Location = new System.Drawing.Point(119, 447);
+			this.lblETA.Location = new System.Drawing.Point(85, 447);
 			this.lblETA.Name = "lblETA";
-			this.lblETA.Size = new System.Drawing.Size(63, 13);
+			this.lblETA.Size = new System.Drawing.Size(131, 13);
 			this.lblETA.TabIndex = 11;
 			this.lblETA.Text = "15 minutes";
+			this.lblETA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.lblETA.Visible = false;
-			this.lblETA.TextChanged += new System.EventHandler(this.lblTextChange);
 			// 
 			// lblProg
 			// 
-			this.lblProg.AutoSize = true;
 			this.lblProg.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblProg.Location = new System.Drawing.Point(112, 537);
+			this.lblProg.Location = new System.Drawing.Point(85, 537);
 			this.lblProg.Name = "lblProg";
-			this.lblProg.Size = new System.Drawing.Size(76, 13);
+			this.lblProg.Size = new System.Drawing.Size(131, 13);
 			this.lblProg.TabIndex = 12;
 			this.lblProg.Text = "Parsing Input...";
 			this.lblProg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.lblProg.Visible = false;
-			this.lblProg.TextChanged += new System.EventHandler(this.lblTextChange);
 			// 
 			// frmMain
 			// 
@@ -283,7 +280,6 @@
 			this.pnlFSCharts.ResumeLayout(false);
 			this.pnlFSCharts.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
         }
 
