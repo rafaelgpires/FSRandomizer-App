@@ -85,7 +85,11 @@ namespace FSRandomizer {
 			if (Directory.EnumerateFileSystemEntries(this.CHSongsFolderLoc).Any()) {
 				//Create a folder to store user's previous content
 				UserCHSongsFolderLoc = Path.GetDirectoryName(this.CHSongsFolderLoc) + "\\songs_backup" + (i > 1 ? i.ToString() : "");
-				if(Directory.Exists(UserCHSongsFolderLoc)) { i++; return prepareCHFolder(i); } //Recursively more backups
+				if(Directory.Exists(UserCHSongsFolderLoc)) {
+					i++; //Recursively more backups
+					if (i > 100) { this.error = "Reached limit creating backup folders. Please clear your Clone Hero folder..."; this.FolderPrepared = false; return false; }
+					return prepareCHFolder(i);
+				}
 				try { Directory.CreateDirectory(UserCHSongsFolderLoc); }
 				catch { this.error = "Couldn't create directory songs_backup to store your songs in.\nTry running as administrator or deleting any existing songs_bakcup directory."; this.FolderPrepared = false; return false; }
 				
