@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Wiitar Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -87,6 +90,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Wiitar Icon.ico" />
     <Content Include="XD Resources\App Title Bar %28Desktop%29.png" />
     <Content Include="XD Resources\CHLogo.png" />
     <Content Include="XD Resources\Close Hover.png" />
