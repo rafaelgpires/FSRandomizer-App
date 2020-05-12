@@ -5,12 +5,9 @@ using System.Runtime.InteropServices;
 
 namespace FSRandomizer {
 	public partial class frmMain : Form {
-		/* Drag window on MouseDown
-		 * URL: https://www.codeproject.com/Articles/11114/Move-window-form-without-Titlebar-in-C
-		 */
+		/* Drag window on MouseDown */
 		public const int WM_NCLBUTTONDOWN = 0xA1;
 		public const int HT_CAPTION = 0x2;
-
 		[DllImportAttribute("user32.dll")]
 		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 		[DllImportAttribute("user32.dll")]
@@ -26,12 +23,12 @@ namespace FSRandomizer {
 			//Prevent it automatically focusing a textbox
 			this.ActiveControl = picCHLogo;
 
-			//Progress bar state
+			//Progress bar default state
 			progTransfer.SetState(2);
 
 			//Initialize FSRandomizer Variables
-			this.editFolder = new editFolder();	//GET.: (Online) FSFolder Size
-			this.readHash = new readHash();         //GET.: (Online) Breakdown List
+			this.editFolder = new editFolder(ref progTransfer, ref lblProg, ref lblETA);	//GET.: (Online) FSFolder Size
+			this.readHash = new readHash();							//GET.: (Online) Breakdown List
 		}
 
 		/* Drag/Double-click Form */
@@ -66,7 +63,7 @@ namespace FSRandomizer {
 		private void btnTransferList_MouseEnter(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button_Hover; }
 		private void btnTransferList_MouseLeave(object sender, EventArgs e) { btnTransferList.Image = Properties.Resources.Transfer_Button; }
 		private void btnTransferList_MouseDown(object sender, MouseEventArgs e) { if (e.Button == MouseButtons.Left) { btnTransferList.Image = Properties.Resources.Transfer_Button_Press; } }
-		private void btnTransferList_Click(object sender, EventArgs e) {
+		private async void btnTransferList_Click(object sender, EventArgs e) {
 			/* Check if we have the required inputs */
 			//Check hash
 			if(!this.readHash.gotHash) {
@@ -100,7 +97,8 @@ namespace FSRandomizer {
 			lblProg.Visible = true;
 
 			//Execute Transfer List
-			if(!editFolder.transferList(readHash, ref progTransfer, ref lblProg, ref lblETA)) new error(editFolder.error, "Transfer List", false);
+			bool success = await editFolder.transferList(readHash);
+			if(!success) new error(editFolder.error, "Transfer List", false);
 			else {
 				MessageBox.Show("Full Series Randomizer has transferred your list to Clone Hero.\n\nRemember to Scan Songs!\nROCK ON!!", "Full List Randomized", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				Application.Exit();

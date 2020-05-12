@@ -7,8 +7,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System;
-using System.Threading;
-using System.Drawing;
 
 namespace FSRandomizer {
 	class editFolder {
@@ -25,9 +23,20 @@ namespace FSRandomizer {
 		public string CHFolderLoc;			//Confirmed location of CH installation
 		public string error;                            //Error message to send when returning false
 		public bool FolderPrepared;                     //Confirmed successful run of prepareCHFolder()
+		ProgressBar progress;                           //UI Element
+		Label lblProg;                                  //UI Element
+		Label lblETA;					//UI Element
 
 		/* Public Methods */
-		public editFolder () { this.getRealFSSize(); }
+		public editFolder (ref ProgressBar progress, ref Label lblProg, ref Label lblETA) {
+			//Get the FSList expected size
+			this.getRealFSSize();
+
+			//Store references to UI Elements
+			this.progress = progress;
+			this.lblProg = lblProg;
+			this.lblETA = lblETA;
+		}
 		public bool readCHFolder(string CHFolderLoc) {
 			//Check validity by finding...
 			try {
@@ -60,19 +69,13 @@ namespace FSRandomizer {
 			this.FSFolderLoc = FSFolderLoc;
 			return true;
 		}
-		public bool transferList(readHash readHash, ref ProgressBar progress, ref Label lblProg, ref Label lblETA) {
-			//TODO: Flavour progress, not real
-			progress.SetState(2); this.progState = 2; //Set Red state (<33%)
-			lblProg.Text = "     Preparing CH Folder...";		if (!this.prepareCHFolder())				return false; lblETA.Text = "14 minutes";	progress.Value = 5;	//Prepare CHFolder
-			lblProg.Text = "     Unzipping folder...";		if (!this.unzipFSFolder(ref progress, ref lblETA))	return false; lblETA.Text = " 1 minute ";	progress.Value = 95;	//Unzip FSFolder
-			lblProg.Text = "     Preparing FS folder...";		if (!this.prepareFSFolder())				return false;					progress.Value = 96;	//Prepare FSFolder
-			lblProg.Text = "     Creationg chapters...";		if (!this.createChapters(readHash.fslist))		return false;					progress.Value = 99;	//Create Chapters
-			lblProg.Text = "     Changing settings...";		if (!this.changeSettings())				return false;					progress.Value = 100;	//Change settings
-
-			//Done!
-			lblProg.Text = "Done!";
-			lblETA.Text = "";
-			return true;
+		public async Task<bool> transferList(readHash readHash) {
+			this.ProgressChange("Preparing CH Folder...", 15, 0);	if (!(await Task.Run(() => this.prepareCHFolder()))) return false;
+			this.ProgressChange("Unzipping folder...", 14, 5);	if (!(await this.unzipFSFolder())) return false;
+			this.ProgressChange("Preparing FS Folder...", 1, 95);	if (!(await Task.Run(() => this.prepareFSFolder()))) return false;
+			this.ProgressChange("Creating chapters...", 1, 96);	if (!(await Task.Run(() => this.createChapters(readHash.fslist)))) return false;
+			this.ProgressChange("Changing settings...", 0, 99);	if (!(await Task.Run(() => this.changeSettings()))) return false;
+			this.ProgressChange("Done!", -1, 100); return true;
 		}
 
 		/* Private Methods (Transfer List) */
@@ -109,43 +112,36 @@ namespace FSRandomizer {
 			this.FolderPrepared = true;
 			return true;
 		}
-		private bool unzipFSFolder(ref ProgressBar progress, ref Label lblETA) {
+		private async Task<bool> unzipFSFolder() {
 			//Check if readFSFolder has already been ran successfully
 			if(string.IsNullOrEmpty(this.FSFolderLoc)) { new error("Internal error.\nFull Series file location unexpectedly unknown.\n\nPlease fix.", "Fatal Error", true); return false; }
 
 			//Check if CHFolder has been prepared
 			if(!this.FolderPrepared) { new error("Internal error.\nI moved on without preparing Clone Hero's folder?\n\nPlease fix.", "Fatal Error", true); return false; }
 
-			//Start unzipping
+			//Start unzipping asynchronously
 			this.unzipping = true;
-			Task.Run(() => ZipFile.ExtractToDirectory(this.FSFolderLoc, this.CHSongsFolderLoc));
-
+			Task _ = Task.Run(() => ZipFile.ExtractToDirectory(this.FSFolderLoc, this.CHSongsFolderLoc));
+			
 			//Track progress
-			while (this.unzipping) {
-				//Use this in async instead
-				var trackProgress = Task.Run(async delegate {
-					await Task.Delay(2500);
-					List<int> output = new List<int>();
+			while(this.unzipping) {
+				await Task.Delay(2500); //Check every 2.5s
+				List<int> output = new List<int>();
 
-					int s = 0;
-					foreach (string Game in Directory.GetDirectories(CHSongsFolderLoc))
-						foreach (string Song in Directory.GetDirectories(Game))
-							s++;
+				int s = 0;
+				foreach (string Game in Directory.GetDirectories(CHSongsFolderLoc))
+					foreach (string Song in Directory.GetDirectories(Game))
+						s++;
 
-					return s;
-				}); trackProgress.Wait();
-
-				if (trackProgress.Result > 0) {
-					//More flavour progress
-					int prog = (int)Math.Ceiling((double)(trackProgress.Result / 660m * 100));
+				if(s > 0) {
+					//Some flavour progress
+					int prog = (int)Math.Ceiling((double)(s / 660m * 100));
 					int mins = 14 - ((int)Math.Ceiling((double)(prog / 8m)));
-					progress.Value = (int)Math.Round((prog * 0.90) + 5);
-					if (trackProgress.Result > 220 && this.progState == 2) { progress.SetState(3); this.progState = 3; lblETA.ForeColor = Color.Yellow; } // >33%
-					if (trackProgress.Result > 440 && this.progState == 3) { progress.SetState(1); this.progState = 1; lblETA.ForeColor = Color.Green; } // >66%
-					lblETA.Text = (mins < 10 ? (" " + mins) : mins.ToString()) + " minutes";
+					prog = (int)Math.Round((prog * 0.90) + 5);
+					this.ProgressChange("Unzipping folder...", mins, prog);
 
 					//Check if we can leave
-					if (trackProgress.Result >= 660) this.unzipping = false;
+					if (s >= 660) this.unzipping = false;
 				}
 			}
 
@@ -226,7 +222,8 @@ namespace FSRandomizer {
 
 							//Change ini and move to chapter folder
 							string newName = "[" + padSongNum + "] " + encore + song[1];
-							if (!this.changeSongIni(songName[0], newName, chapterSong, song[0])) return false;
+							string iniName = (encore == "[ENCORE] " ? "(Encore) " : "(Super Encore) ") + song[1];
+							if (!this.changeSongIni(songName[0], iniName, chapterSong, song[0])) return false;
 							try { Directory.Move(songName[0], ChapterFolder + "\\" + newName); }
 							catch { this.error = "Couldn't move song to chapter folder.\nTry running as admin, I'll have to unzip again..."; return false; }
 						}
@@ -347,6 +344,17 @@ namespace FSRandomizer {
 				case "Guitar Hero: WT":		return 10;
 				default: return -1;
 			}
+		}
+		private void ProgressChange(string text, int eta, int prog) {
+			//Change progress bar colors depending on progress
+			if(prog < 33 && this.progState != 2) { this.progress.SetState(2); this.progState = 2; }
+			if(prog > 33 && prog < 66 && this.progState != 3) { this.progress.SetState(3); this.progState = 3; }
+			if(prog > 66 && this.progState != 1) { this.progress.SetState(1); this.progState = 1; }
+
+			//Update labels and progress
+			this.lblETA.Text = (eta == -1) ? "" : (eta + " minutes");
+			this.lblProg.Text = text;
+			this.progress.Value = prog;
 		}
 	}
 }
