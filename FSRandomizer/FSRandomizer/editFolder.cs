@@ -222,7 +222,7 @@ namespace FSRandomizer {
 
 							//Change ini and move to chapter folder
 							string newName = "[" + padSongNum + "] " + encore + song[1];
-							string iniName = (encore == "[ENCORE] " ? "(Encore) " : "(Super Encore) ") + song[1];
+							string iniName = ((encore != "") ? ((encore == "[ENCORE] " ? "(Encore) " : "(Super Encore) ")) : "") + song[1];
 							if (!this.changeSongIni(songName[0], iniName, chapterSong, song[0])) return false;
 							try { Directory.Move(songName[0], ChapterFolder + "\\" + newName); }
 							catch { this.error = "Couldn't move song to chapter folder.\nTry running as admin, I'll have to unzip again..."; return false; }
