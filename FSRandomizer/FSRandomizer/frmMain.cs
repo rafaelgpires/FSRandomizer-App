@@ -32,7 +32,7 @@ namespace FSRandomizer {
 		}
 
 		/* Drag/Double-click Form */
-		private void frmMain_MouseDown(object sender, MouseEventArgs e) {
+		private void Drag_MouseDown(object sender, MouseEventArgs e) {
 			if (e.Button == MouseButtons.Left) {
 				if (e.Clicks == 1) {
 					//Drag

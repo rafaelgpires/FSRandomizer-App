@@ -175,6 +175,7 @@
 			this.picTitleBar.Size = new System.Drawing.Size(300, 32);
 			this.picTitleBar.TabIndex = 0;
 			this.picTitleBar.TabStop = false;
+			this.picTitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Drag_MouseDown);
 			// 
 			// picLabelFSCharts
 			// 
@@ -266,7 +267,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Clone Hero - Full Series Randomizer";
 			this.Load += new System.EventHandler(this.frmMain_Load);
-			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseDown);
+			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Drag_MouseDown);
 			this.pnlFSList.ResumeLayout(false);
 			this.pnlFSList.PerformLayout();
 			this.pnlCHFolder.ResumeLayout(false);
