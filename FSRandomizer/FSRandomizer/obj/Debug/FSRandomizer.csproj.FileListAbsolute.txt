@@ -1,8 +1,0 @@
-C:\Users\Nell\Desktop\FSRandomizer App\FSRandomizer\FSRandomizer\bin\Debug\FSRandomizer.exe.config
-C:\Users\Nell\Desktop\FSRandomizer App\FSRandomizer\FSRandomizer\bin\Debug\FSRandomizer.exe
-C:\Users\Nell\Desktop\FSRandomizer App\FSRandomizer\FSRandomizer\bin\Debug\FSRandomizer.pdb
-C:\Users\Nell\Desktop\FSRandomizer App\FSRandomizer\FSRandomizer\obj\Debug\FSRandomizer.frmMain.resources
-C:\Users\Nell\Desktop\FSRandomizer App\FSRandomizer\FSRandomizer\obj\Debug\FSRandomizer.Properties.Resources.resources
-C:\Users\Nell\Desktop\FSRandomizer App\FSRandomizer\FSRandomizer\obj\Debug\FSRandomizer.csproj.GenerateResource.Cache
-C:\Users\Nell\Desktop\FSRandomizer App\FSRandomizer\FSRandomizer\obj\Debug\FSRandomizer.exe
-C:\Users\Nell\Desktop\FSRandomizer App\FSRandomizer\FSRandomizer\obj\Debug\FSRandomizer.pdb
