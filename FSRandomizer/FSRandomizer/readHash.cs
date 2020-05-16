@@ -60,7 +60,7 @@ namespace FSRandomizer {
 			//Download the breakdown file
 			WebClient client = new WebClient();
 			client.Encoding = System.Text.Encoding.UTF8;
-			string breakdownFile = client.DownloadString("https://www.fsrandomizer.psarchives.com/breakdown.txt");
+			string breakdownFile = client.DownloadString("https://fsrandomizer.psarchives.com/breakdown.txt");
 
 			//Build the song list from the breakdown
 			this.songlist = new List<List<string>>();

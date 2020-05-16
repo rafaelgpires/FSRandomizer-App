@@ -282,7 +282,7 @@ namespace FSRandomizer {
 			//Download RealFSSize
 			WebClient client = new WebClient();
 			client.Encoding = System.Text.Encoding.UTF8;
-			try { this.RealFSSize = client.DownloadString("https://www.fsrandomizer.psarchives.com/RealFSSize.txt"); }
+			try { this.RealFSSize = client.DownloadString("https://fsrandomizer.psarchives.com/RealFSSize.txt"); }
 			catch { new error("Couldn't retrieve file verification online to confirm there's no problems with your folder. Maybe website is down?", "Fatal Error", true); return; }
 		}
 		private bool changeSongIni(string songPath, string songName, int playlistTrack, string difficulty) {
