@@ -20,11 +20,9 @@ namespace FSRandomizer {
 		/* Main Form */
 		public frmMain() { InitializeComponent(); }
 		private void frmMain_Load(object sender, EventArgs e) {
-			//Prevent it automatically focusing a textbox
-			this.ActiveControl = picCHLogo;
-
-			//Progress bar default state
-			progTransfer.SetState(2);
+			//Defaults
+			this.ActiveControl = picCHLogo;	//Prevent it automatically focusing a textbox
+			progTransfer.SetState(2);	//Progress bar default state
 
 			//Initialize FSRandomizer Variables
 			this.editFolder = new editFolder(ref progTransfer, ref lblProg, ref lblETA);	//GET.: (Online) FSFolder Size

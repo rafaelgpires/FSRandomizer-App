@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			this.txtFSList = new System.Windows.Forms.TextBox();
 			this.pnlFSList = new System.Windows.Forms.Panel();
 			this.pnlCHFolder = new System.Windows.Forms.Panel();
@@ -263,9 +264,10 @@
 			this.Controls.Add(this.picClose);
 			this.Controls.Add(this.picTitleBar);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "frmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Clone Hero - Full Series Randomizer";
+			this.Text = "Full Series Randomizer";
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Drag_MouseDown);
 			this.pnlFSList.ResumeLayout(false);
