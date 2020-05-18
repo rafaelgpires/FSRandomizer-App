@@ -29,3 +29,4 @@ Planning these features in the following priority:
       * **Compare Hashes**: We can't rely on song names, so hash every chart in the user folder and match it to ours.
       * **Standardize the Folder**: Standardize the folder so it looks exactly like our currently published zip.
       * **Transfer List**: Run the remaining commands using this folder instead of downloading one.
+  6. **Automatic Upload**: Optionally run as a background app either injecting into Clone Hero or reading the save file to update your list with FCs, Speeds and Scores automatically as you play the game.
