@@ -324,7 +324,7 @@ namespace FSRandomizer {
 				string configFile = string.Join("\n", newFile);
 				File.WriteAllText(songIniPath, configFile);
 			}
-			catch { this.error = "Couldn't change '" + "'s song.ini at '" + songPath + "'. Try running as administrator?"; return false; }
+			catch { this.error = "Couldn't change '" + songName + "'s song.ini at '" + songPath + "'. Try running as administrator?"; return false; }
 
 			//All went well
 			return true;
